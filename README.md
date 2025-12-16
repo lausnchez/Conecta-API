@@ -12,8 +12,33 @@
 3. Crear el vendor con `composer install`. 
 4. Generar las migraciones de las tablas default de la API con `php artisan migrate`.
 
-> [!ALERT]
+> [!CAUTION]
 > No se sabe de momento si al importar se deben de hacer configuraciones iniciales de Sanctum y Breeze, estamos mirando a ver como funciona en repositorios compartidos.
+
+## ❓ Preguntas pendientes
+- **Libertad a la hora de crear la bbdd (limitada)**
+- **Diferenciar entre categorias y tags**
+- **Servidor**
+- **Tabla de logros**
+
+La idea es hacer una tabla intermedia.
+
+**LOGROS**
+- id_logro (PK)
+- nombre
+- descripcion
+- icono
+- total_progreso
+- puntos_generados
+- secreto (bool)
+
+**USUARIO_LOGRO**
+- id_usuario (FK)
+- id_logro (FK)
+- fecha_conseguido
+- progreso (opcional)
+- PRIMARY KEY (id_usuario, id_logro)
+
 
 ## 💀 TO-DO
 - [ ] Categorías
