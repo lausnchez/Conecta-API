@@ -8,3 +8,7 @@
 2. Generar una APP_KEY con `php artisan key:generate`.
 3. Crear el vendor con `composer install`. 
 4. Generar las migraciones de las tablas default de la API con `php artisan migrate`.
+
+>[!ALERT]
+>No se sabe de momento si al importar se deben de hacer configuraciones iniciales de Sanctum y Breeze, estamos mirando a ver como funciona en repositorios compartidos.
+

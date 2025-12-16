@@ -1,0 +1,16 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+
+// Controllers
+use App\Http\Controllers\EventosController;
+
+Route::prefix('v1')->group(function () {
+    Route::get('/prueba', function () {
+        return "Ruta de prueba";
+    });
+    
+    Route::get('/eventos', [EventosController::class, 'getAll']);
+    
+});
