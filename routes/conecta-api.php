@@ -12,5 +12,6 @@ Route::prefix('v1')->group(function () {
     });
     
     Route::get('/eventos', [EventosController::class, 'getAll']);
+    Route::get('/eventos/{id}', [EventosController::class, 'getEventoById']);
     
 });

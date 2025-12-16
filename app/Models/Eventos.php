@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class Eventos extends Model
 {
     protected $table = 'evento';
+    protected $primaryKey = 'id_evento';
+    
     // Campos rellenables
     protected $fillable = [
         'id_categoria',
@@ -26,5 +28,12 @@ class Eventos extends Model
      */
     public static function getAllEventos(){
         return self::all();
+    }
+
+    /**
+     * Buscar evento por su Id
+     */
+    public static function getEventoById($id){
+        return self::find($id);
     }
 }
