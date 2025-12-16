@@ -8,7 +8,9 @@ class Eventos extends Model
 {
     protected $table = 'evento';
     protected $primaryKey = 'id_evento';
-    
+
+    //public $timestamps = false;
+
     // Campos rellenables
     protected $fillable = [
         'id_categoria',
@@ -23,17 +25,34 @@ class Eventos extends Model
         'valoracion'
     ];
 
+    protected $hidden = ['id_categoria','created_at','updated_at'];
+
     /**
      * Obtiene todos los eventos
+     * Ruta: /v1/eventos
+     * 
+     * @return \App\Models\Eventos|null
      */
     public static function getAllEventos(){
         return self::all();
     }
 
     /**
-     * Buscar evento por su Id
+     * Obtiene un evento por Id
+     * Ruta: /v1/eventos/{id}
+     * 
+     * @param int $id
+     * @return \App\Models\Eventos|null
      */
     public static function getEventoById($id){
         return self::find($id);
+    }
+
+
+    /**
+     * Relación con Categorías
+     */
+    public function categoria(){
+        return $this->belongsTo(Categorias::class, 'id_categoria');
     }
 }

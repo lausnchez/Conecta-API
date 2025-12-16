@@ -12,11 +12,12 @@ class EventosController extends Controller
 
     public function getAll(){
         $eventos = Eventos::getAllEventos();
-        return response()->json($eventos);
+        return response()->json($eventos);       
     }
 
     public function getEventoById($id){
-        $evento = Eventos::getEventoById($id);
-        return response()->json($evento);
+        // $evento = Eventos::getEventoById($id);
+        // return response()->json($evento);
+        return Eventos::with('categoria')->findOrFail($id);
     }
 }
