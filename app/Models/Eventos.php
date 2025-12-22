@@ -25,7 +25,7 @@ class Eventos extends Model
         'valoracion'
     ];
 
-    protected $hidden = ['id_categoria','created_at','updated_at'];
+    protected $hidden = ['created_at','updated_at'];
 
     /**
      * Obtiene todos los eventos
@@ -49,10 +49,13 @@ class Eventos extends Model
     }
 
 
-    /**
-     * Relación con Categorías
-     */
+    // RELACIONES
     public function categoria(){
         return $this->belongsTo(Categorias::class, 'id_categoria');
+    }
+
+    // Puede contener distintos reportes
+    public function reporte(){
+        return $this->hasMany(Reporte::class, 'id_reporte');
     }
 }

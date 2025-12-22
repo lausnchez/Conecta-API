@@ -22,6 +22,7 @@ return new class extends Migration
             $table->boolean('es_familiar')->default(false);
             $table->date('fecha_nacimiento')->nullable();
             $table->decimal('procentaje_discapacidad', 5, 2)->default(0.00);
+            $table->unsignedBigInteger('rol')->nullable(false)->default(0);
             //$table->string('password_hash')->nullable(false);
             //$table->timestamps();   // Incluye created_at y Updated_at
 

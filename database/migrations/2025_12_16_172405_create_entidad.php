@@ -6,6 +6,9 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
+
+    // FALTA UNIR CON LA BASE DE DATOS DE MONGODB
+
     /**
      * Run the migrations.
      */
@@ -13,9 +16,11 @@ return new class extends Migration
     {
         Schema::create('entidad', function(Blueprint $table){
             $table->id('id_entidad');
-            $table->string('localidad', 150)->nullable();
-            $table->string('ubicacion', 255)->nullable();
-            $table->string('tipo', 100)->nullable();
+            $table->string('nombre')->nullable(false);
+            $table->text('descripcion')->nullable();
+            $table->boolean('es_accesible')->nullable(false)->default(false);
+            $table->string('foto_entidad')->nullable();
+
             $table->timestamps();
         });
     }

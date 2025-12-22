@@ -12,26 +12,44 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('evento', function (Blueprint $table) {
-            $table->unsignedBigInteger('id_categoria')->nullable();
-
             $table->id('id_evento');
-            $table->date('fecha_evento')->nullable(false);
-            $table->string('tipo_evento', 100)->nullable();
-            $table->boolean('bool_acceso')->default(false);
-            $table->boolean('bool_acceso')->default(false);
-            $table->boolean('bool_equipo')->default(false);
-            $table->boolean('bool_masc')->default(false);
-            $table->text('descripcion')->nullable();
-            $table->integer('num_participantes')->nullable();
-            $table->text('incidencias')->nullable();
-            $table->float('valoracion')->nullable();
+                       
+            // Foreign Keys
+            $table->unsignedBigInteger('id_categoria')->nullable(false);
+            $table->unsignedBigInteger('id_user')->nullable(false);
+            $table->unsignedBigInteger('id_entidad')->nullable(false);
 
-            $table->timestamps();
+            $table->foreign('id_user')
+                    ->references('id')
+                    ->on('users')
+                    ->nullOnDelete();
 
             $table->foreign('id_categoria')
                     ->references('id_categoria')
                     ->on('categoria')
                     ->nullOnDelete();
+
+            $table->foreign('id_entidad')
+                    ->references('id_entidad')
+                    ->on('entidad')
+                    ->nullOnDelete();
+
+            // Campos propios
+            $table->string('nombre')->nullable(false);
+            $table->date('fecha_evento')->nullable(false);
+            $table->text('descripcion')->nullable(false);
+            $table->decimal('valoracion', 3, 2)->nullable(false)->default(0);   // 0,00 de valoración
+
+            // Ubicación ->Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
+            $table->integer('ubicacion')->nullable();   // La ponemos false?
+            
+            $table->integer('num_participantes')->nullable(false)->default(0);
+            $table->integer('max_participantes')->nullable();   // Para que en caso de que haya un tope de participantes se pueda mirar
+            $table->string('foto_evento')->nullable();
+            $table->boolean('es_accesible')->nullable(false)->default(false);
+
+            // TimeStamps
+            $table->timestamps();
         });
     }
 
