@@ -11,15 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entidad_evento', function(Blueprint $table){
+        Schema::create('opiniones', function (Blueprint $table) {
+            $table->id('id');
             $table->unsignedBigInteger('id_entidad');
             $table->unsignedBigInteger('id_evento');
-
-            $table->string('tipo_relacion')->nullable(false);
+            
+            $table->foreign('id_entidad')->references('id')->on('entidades')->cascadeOnDelete();
+            $table->foreign('id_evento')->references('id')->on('eventos')->cascadeOnDelete();
+            
+            $table->text('contenido');
+            $table->decimal('valoracion', 4, 2)->default(0);
+            
             $table->timestamps();
-
-            $table->foreign('id_entidad')->references('id_entidad')->on('entidad')->cascadeOnDelete();
-            $table->foreign('id_evento')->references('id_evento')->on('evento')->cascadeOnDelete();
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('entidad_evento');
+        Schema::dropIfExists('opiniones');
     }
 };

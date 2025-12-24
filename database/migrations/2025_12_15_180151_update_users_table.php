@@ -12,20 +12,21 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
-            //$table->id('id_usuario');
-            //$table->string('tipo', 50)->nullable(false);  <- no se qué hace
-            $table->string('nombre', 100)->nullable(false);
-            $table->string('apellido', 100)->nullable(false);
-            //$table->string('email', 255)->unique()->nullable(false);
+            $table->string('nombre', 100);
+            $table->string('apellido', 100);
+
             $table->string('telefono', 20)->nullable();
             $table->boolean('es_empresa')->default(false);
             $table->boolean('es_familiar')->default(false);
             $table->date('fecha_nacimiento')->nullable();
-            $table->decimal('procentaje_discapacidad', 5, 2)->default(0.00);
-            $table->unsignedBigInteger('rol')->nullable(false)->default(0);
-            //$table->string('password_hash')->nullable(false);
-            //$table->timestamps();   // Incluye created_at y Updated_at
+            $table->decimal('porcentaje_discapacidad', 5, 2)->default(0.00);
+            $table->unsignedBigInteger('rol');
 
+            $table->foreign('rol')
+                    ->references('id')
+                    ->on('roles')
+                    ->restrictOnDelete();
+          
             // Borrados de la tabla original
             $table->dropColumn('name');
         });
@@ -45,6 +46,7 @@ return new class extends Migration
             $table->dropColumn('es_familiar');
             $table->dropColumn('fecha_nacimiento');
             $table->dropColumn('porcentaje_discapacidad');
+            $table->dropColumn('rol');
 
             // Restaurar campos generados originalmente
             $table->string('name');

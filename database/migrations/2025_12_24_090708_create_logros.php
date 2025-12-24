@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('categorias', function(Blueprint $table){
-            $table->id('id');
-            $table->string('nombre', 50)->unique();
-            // $table->text('descripcion')->nullable();
+        Schema::create('logros', function (Blueprint $table) {
+            $table->id();
+            $table->string('nombre');
+            $table->text('descripcion');
+            $table->integer('meta')->default(0);
+            $table->string('foto_logro')->nullable();
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('categorias');
+        Schema::dropIfExists('logros');
     }
 };

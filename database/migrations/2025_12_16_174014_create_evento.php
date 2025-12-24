@@ -11,42 +11,42 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('evento', function (Blueprint $table) {
-            $table->id('id_evento');
+        Schema::create('eventos', function (Blueprint $table) {
+            $table->id('id');
                        
             // Foreign Keys
-            $table->unsignedBigInteger('id_categoria')->nullable(false);
-            $table->unsignedBigInteger('id_user')->nullable(false);
-            $table->unsignedBigInteger('id_entidad')->nullable(false);
+            $table->unsignedBigInteger('id_categoria');
+            $table->unsignedBigInteger('id_user');
+            $table->unsignedBigInteger('id_entidad');
 
             $table->foreign('id_user')
                     ->references('id')
                     ->on('users')
-                    ->nullOnDelete();
+                    ->cascadeOnDelete();
 
             $table->foreign('id_categoria')
-                    ->references('id_categoria')
-                    ->on('categoria')
-                    ->nullOnDelete();
+                    ->references('id')
+                    ->on('categorias')
+                    ->cascadeOnDelete();
 
             $table->foreign('id_entidad')
-                    ->references('id_entidad')
-                    ->on('entidad')
-                    ->nullOnDelete();
+                    ->references('id')
+                    ->on('entidades')
+                    ->cascadeOnDelete();
 
             // Campos propios
-            $table->string('nombre')->nullable(false);
-            $table->date('fecha_evento')->nullable(false);
-            $table->text('descripcion')->nullable(false);
-            $table->decimal('valoracion', 3, 2)->nullable(false)->default(0);   // 0,00 de valoración
+            $table->string('nombre');
+            $table->date('fecha_evento');
+            $table->text('descripcion')->nullable();
+            $table->decimal('valoracion', 4, 2)->default(0);   // 0,00 de valoración
 
             // Ubicación ->Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
-            $table->integer('ubicacion')->nullable();   // La ponemos false?
+            $table->string('ubicacion', 24)->nullable();
             
-            $table->integer('num_participantes')->nullable(false)->default(0);
+            $table->integer('num_participantes')->default(0);
             $table->integer('max_participantes')->nullable();   // Para que en caso de que haya un tope de participantes se pueda mirar
             $table->string('foto_evento')->nullable();
-            $table->boolean('es_accesible')->nullable(false)->default(false);
+            $table->boolean('es_accesible')->default(false);
 
             // TimeStamps
             $table->timestamps();
@@ -58,6 +58,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('evento');
+        Schema::dropIfExists('eventos');
     }
 };

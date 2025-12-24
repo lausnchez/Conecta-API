@@ -14,11 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('entidad', function(Blueprint $table){
-            $table->id('id_entidad');
-            $table->string('nombre')->nullable(false);
+        // Falta conectividad con MongoDB para la relación con las geolocalizaciones
+
+        Schema::create('entidades', function(Blueprint $table){
+            $table->id('id');
+
+            $table->string('nombre');
             $table->text('descripcion')->nullable();
-            $table->boolean('es_accesible')->nullable(false)->default(false);
+            $table->boolean('es_accesible')->default(false);
             $table->string('foto_entidad')->nullable();
 
             $table->timestamps();
@@ -30,6 +33,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropDatabaseIfExists('entidad');
+        Schema::dropIfExists('entidades');
     }
 };
