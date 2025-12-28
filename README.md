@@ -17,7 +17,13 @@
 > No se sabe de momento si al importar se deben de hacer configuraciones iniciales de Sanctum y Breeze, estamos mirando a ver como funciona en repositorios compartidos. De momento no le hagáis caso, no debería de afectaros en nada al desarrollar.
 
 ## 📁 Estructura de la base de datos
-![Estructura de la base de datos](docs\images\Conecta_db_structure.png)
+![Estructura de la base de datos]([docs\images\Conecta_db_structure.png](https://github.com/Hackathon-JuanXXIII/Conecta-API/blob/main/docs/images/Conecta_db_structure.png))
 
-[Página para ver la estructura de la base de datos](https://dbdiagram.io/d/Conecta-694bc6dcb8f7d868860d100e)
+[Página para ver la estructura de la base de datos completamente actualizada](https://dbdiagram.io/d/Conecta-694bc6dcb8f7d868860d100e)
 
+## ❗ Tecnologías usadas (versiones)
+- PHP: 8.2
+- Laravel: 12.0
+- MySQL
+- Laravel Sanctum: 4.2
+- Laravel Breeze: 2.3
