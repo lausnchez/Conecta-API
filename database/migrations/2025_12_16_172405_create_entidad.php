@@ -17,7 +17,7 @@ return new class extends Migration
         // Falta conectividad con MongoDB para la relación con las geolocalizaciones
 
         Schema::create('entidades', function(Blueprint $table){
-            $table->id('id');
+            $table->id();
 
             $table->string('nombre');
             $table->text('descripcion')->nullable();

@@ -6,14 +6,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categorias extends Model
 {
-    // No agregar timestamps? 
-
-    protected $table = "categoria";
-    protected $primaryKey = 'id_categoria';
+    protected $table = "categorias";
+    protected $primaryKey = 'id';
 
     protected $fillable = [
         'nombre'
     ];
 
     protected $hidden = ['created_at','updated_at'];
+
+    // Relaciones
+    public function evento(){
+        
+    }
 }

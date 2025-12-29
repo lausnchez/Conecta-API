@@ -17,7 +17,6 @@ return new class extends Migration
             $table->text('descripcion');
             $table->integer('meta')->default(0);
             $table->string('foto_logro')->nullable();
-            $table->timestamps();
         });
     }
 

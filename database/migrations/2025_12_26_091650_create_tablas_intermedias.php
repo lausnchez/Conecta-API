@@ -18,8 +18,11 @@ return new class extends Migration
             $table->unsignedBigInteger('id_logro');
             $table->unsignedBigInteger('id_user');
             
+            $table->integer('progreso')->default(0);
+
             $table->foreign('id_logro')->references('id')->on('logros')->cascadeOnDelete();
             $table->foreign('id_user')->references('id')->on('users')->cascadeOnDelete();
+
             $table->timestamps();
         });
 
@@ -30,6 +33,7 @@ return new class extends Migration
             
             $table->foreign('id_evento')->references('id')->on('eventos')->cascadeOnDelete();
             $table->foreign('id_user')->references('id')->on('users')->cascadeOnDelete();
+            
             $table->timestamps();
         });
 
@@ -40,7 +44,6 @@ return new class extends Migration
             
             $table->foreign('id_evento')->references('id')->on('eventos')->cascadeOnDelete();
             $table->foreign('id_tag')->references('id')->on('tags')->cascadeOnDelete();
-            $table->timestamps();
         });
     }
 

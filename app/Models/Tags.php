@@ -4,16 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entidades extends Model
+class Tags extends Model
 {
-    protected $table = 'entidades';
+    protected $table = 'tags';
     protected $primaryKey = 'id';
 
     protected $fillable = [
         'nombre',
-        'descripcion',
-        'es_accesible',
-        'foto_entidad'
     ];
 
     protected $hidden = ['created_at','updated_at'];
@@ -22,9 +19,5 @@ class Entidades extends Model
     // RELACIONES
     public function opinion(){
 
-    }
-
-    public function evento(){
-        
     }
 }

@@ -16,10 +16,10 @@ return new class extends Migration
                        
             // Foreign Keys
             $table->unsignedBigInteger('id_categoria');
-            $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_entidad');
+            $table->unsignedBigInteger('id_creador');
 
-            $table->foreign('id_user')
+            $table->foreign('id_creador')
                     ->references('id')
                     ->on('users')
                     ->cascadeOnDelete();
@@ -44,7 +44,6 @@ return new class extends Migration
             $table->string('ubicacion', 24)->nullable();
             
             $table->integer('num_participantes')->default(0);
-            $table->integer('max_participantes')->nullable();   // Para que en caso de que haya un tope de participantes se pueda mirar
             $table->string('foto_evento')->nullable();
             $table->boolean('es_accesible')->default(false);
 
