@@ -57,7 +57,14 @@ class User extends Authenticatable
         ];
     }
 
-    // Relaciones
-    
+    // RELACIONES
+    //-------------------------------------------------------
+    public function rol(){
+        return $this->belongsTo(Roles::class);
+    }
+
+    public function event(){
+        return $this->hasMany(Eventos::class);
+    }
 
 }

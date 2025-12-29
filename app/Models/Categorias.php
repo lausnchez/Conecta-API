@@ -17,6 +17,9 @@ class Categorias extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
-    // Relaciones
-    
+    // RELACIONES
+    //-------------------------------------------------------
+    public function eventos(){
+        return $this->hasMany(Eventos::class);
+    }
 }

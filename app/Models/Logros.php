@@ -4,22 +4,29 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Tags extends Model
+class Logros extends Model
 {
-    protected $table = 'tags';
-    protected $primaryKey = 'id';
+    protected $table = 'logros';
     public $timestamps = false;
 
+    // Campos rellenables
     protected $fillable = [
         'nombre',
+        'descripcion',
+        'meta',
+        'foto_logro',
     ];
 
     protected $hidden = [];
 
+    protected function casts(): array
+    {
+        return [
+            'meta' => 'integer',
+        ];
+    }
 
     // RELACIONES
     //-------------------------------------------------------
-    public function eventos(){
-        return $this->belongsToMany(Eventos::class, 'eventos_tags', 'id_tag', 'id_evento');
-    }
+    
 }

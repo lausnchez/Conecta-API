@@ -40,7 +40,7 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             $table->decimal('valoracion', 4, 2)->default(0);   // 0,00 de valoración
 
-            // Ubicación ->Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
+            // Ubicación -> Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
             $table->string('ubicacion', 24)->nullable();
             
             $table->integer('num_participantes')->default(0);

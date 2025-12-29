@@ -19,7 +19,20 @@ class Opiniones extends Model
     ];
 
     protected $hidden = ['created_at','updated_at'];
+    protected function casts(): array
+    {
+        return [
+            'valoracion' => 'decimal:2',
+        ];
+    }
 
     // RELACIONES
+    //-------------------------------------------------------
+    public function entidad(){
+        return $this->belongsTo(Entidades::class, 'id_entidad');
+    }
     
+    public function evento(){
+        return $this->belongsTo(Eventos::class, 'id_evento');
+    }
 }

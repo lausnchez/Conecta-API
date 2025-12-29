@@ -27,20 +27,21 @@ return new class extends Migration
         });
 
         Schema::create('eventos_users', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('id_evento');
             $table->unsignedBigInteger('id_user');
+
+            $table->primary(['id_evento', 'id_user']);
             
             $table->foreign('id_evento')->references('id')->on('eventos')->cascadeOnDelete();
             $table->foreign('id_user')->references('id')->on('users')->cascadeOnDelete();
             
-            $table->timestamps();
         });
 
         Schema::create('eventos_tags', function (Blueprint $table) {
-            $table->id();
             $table->unsignedBigInteger('id_evento');
             $table->unsignedBigInteger('id_tag');
+
+            $table->primary(['id_evento', 'id_tag']);
             
             $table->foreign('id_evento')->references('id')->on('eventos')->cascadeOnDelete();
             $table->foreign('id_tag')->references('id')->on('tags')->cascadeOnDelete();

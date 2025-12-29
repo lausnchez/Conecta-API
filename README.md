@@ -75,13 +75,13 @@ Todavía no está desarrollado.
 - [x] Roles
 
 ### Relaciones
-- [ ] Usuarios 
-- [ ] Entidades 
-- [ ] Eventos
-- [ ] Categorías
-- [ ] Tags
-- [ ] Opiniones
-- [ ] Roles
+- [x] Usuarios 
+- [x] Entidades 
+- [x] Eventos
+- [x] Categorías
+- [x] Tags
+- [x] Opiniones
+- [x] Roles
 
 ### Controladores
 - [ ] Usuarios 
