@@ -8,6 +8,7 @@ class Entidades extends Model
 {
     protected $table = 'entidades';
     protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
         'nombre',
@@ -20,11 +21,5 @@ class Entidades extends Model
 
 
     // RELACIONES
-    public function opinion(){
-
-    }
-
-    public function evento(){
-        
-    }
+    
 }

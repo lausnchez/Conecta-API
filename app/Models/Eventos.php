@@ -6,23 +6,23 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eventos extends Model
 {
-    protected $table = 'evento';
-    protected $primaryKey = 'id_evento';
-
-    //public $timestamps = false;
+    protected $table = 'eventos';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
     // Campos rellenables
     protected $fillable = [
         'id_categoria',
+        'id_entidad',
+        'id_creador',
+        'nombre',
         'fecha_evento',
-        'tipo_evento',
-        'bool_acceso',
-        'bool_equipo',
-        'bool_masc',
         'descripcion',
+        'valoracion',
+        'ubicacion',
         'num_participantes',
-        'incidencias',
-        'valoracion'
+        'foto_evento',
+        'es_accesible',
     ];
 
     protected $hidden = ['created_at','updated_at'];
@@ -50,12 +50,5 @@ class Eventos extends Model
 
 
     // RELACIONES
-    public function categoria(){
-        return $this->belongsTo(Categorias::class, 'id_categoria');
-    }
-
-    // Puede contener distintos reportes
-    public function reporte(){
-        return $this->hasMany(Reporte::class, 'id_reporte');
-    }
+    
 }

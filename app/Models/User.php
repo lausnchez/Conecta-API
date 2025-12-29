@@ -24,7 +24,8 @@ class User extends Authenticatable
         'es_empresa',
         'es_familiar',
         'fecha_nacimiento',
-        'procentaje_discapacidad',
+        'porcentaje_discapacidad',
+        'rol',
         'email',
         'password',
     ];
@@ -48,7 +49,15 @@ class User extends Authenticatable
     {
         return [
             'email_verified_at' => 'datetime',
+            'fecha_nacimiento' => 'date',
+            'es_empresa' => 'boolean',
+            'es_familiar' => 'boolean',
+            'porcentaje_discapacidad' => 'decimal:2',
             'password' => 'hashed',
         ];
     }
+
+    // Relaciones
+    
+
 }

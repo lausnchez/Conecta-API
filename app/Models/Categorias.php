@@ -8,15 +8,15 @@ class Categorias extends Model
 {
     protected $table = "categorias";
     protected $primaryKey = 'id';
+    public $timestamps = true;
 
     protected $fillable = [
-        'nombre'
+        'nombre',
+        'descripcion',
     ];
 
     protected $hidden = ['created_at','updated_at'];
 
     // Relaciones
-    public function evento(){
-        
-    }
+    
 }

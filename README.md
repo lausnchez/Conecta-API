@@ -1,11 +1,11 @@
 # Conecta API
+> [!NOTE]
+> Ya están disponibles las migraciones de la base de datos. Tenéis la estructura más abajo por si la necesitáis. **Se está trabajando actualmente en los modelos**.
 
 API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la Hackathon del municipio de 2025/2026.
 
 Su objetivo es recoger la información almacenada en varias bases de datos para asegurar el correcto funcionamiento de las aplicaciones del proyecto de forma escalable y limpia.
 
-> [!NOTE]
-> Ya están disponibles las migraciones de la base de datos. Tenéis la estructura más abajo por si la necesitais.
 
 ## 🔍 Índice
 1. [Al importar al PC](#-al-importar-en-el-pc)
@@ -18,6 +18,8 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
     - [Tags](#--tags) 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
+
+[Cosas por hacer](#️-cosas-por-hacer)
 
 ## 💾 Al importar en el PC
 > [!IMPORTANT]
@@ -36,13 +38,13 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 ### Base de datos en MySQL
 ![Estructura de la base de datos](https://github.com/Hackathon-JuanXXIII/Conecta-API/blob/main/docs/images/Conecta_db_structure.png)
 
-[Página para ver la estructura de la base de datos](https://dbdiagram.io/d/Conecta-694bc6dcb8f7d868860d100e)
+[Página para ver la estructura actualizada de la base de datos](https://dbdiagram.io/d/Conecta-694bc6dcb8f7d868860d100e)
 
 ### Base de datos en MongoDB
 
 ## ENDPOINTS
 > [!IMPORTANT]
-> No se sabe de momento si al importar se deben de hacer configuraciones iniciales de Sanctum y Breeze, estamos mirando a ver como funciona en repositorios compartidos. De momento no le hagáis caso, no debería de afectaros en nada al desarrollar.
+> Se está trabajando actualmente en: `Users`
 
 ### 💡 | Usuarios
 Todavía no está desarrollado.
@@ -61,6 +63,35 @@ Todavía no está desarrollado.
 
 ### 💡 | Opiniones
 Todavía no está desarrollado.
+
+## ✏️ Cosas por hacer
+### Modelos básicos
+- [x] Usuarios 
+- [x] Entidades 
+- [x] Eventos
+- [x] Categorías
+- [x] Tags
+- [x] Opiniones
+- [x] Roles
+
+### Relaciones
+- [ ] Usuarios 
+- [ ] Entidades 
+- [ ] Eventos
+- [ ] Categorías
+- [ ] Tags
+- [ ] Opiniones
+- [ ] Roles
+
+### Controladores
+- [ ] Usuarios 
+- [ ] Entidades 
+- [ ] Eventos
+- [ ] Categorías
+- [ ] Tags
+- [ ] Opiniones
+- [ ] Roles
+
 
 ## ❗ Tecnologías usadas (versiones)
 - PHP: 8.2
