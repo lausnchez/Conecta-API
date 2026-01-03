@@ -22,4 +22,8 @@ class Tags extends Model
     public function eventos(){
         return $this->belongsToMany(Eventos::class, 'eventos_tags', 'id_tag', 'id_evento');
     }
+
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
+    
 }

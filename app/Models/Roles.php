@@ -22,4 +22,8 @@ class Roles extends Model
         return $this->hasMany(User::class);
     }
 
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
+    
+
 }

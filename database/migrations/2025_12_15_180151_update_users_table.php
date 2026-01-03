@@ -25,8 +25,10 @@ return new class extends Migration
             $table->foreign('rol')
                     ->references('id')
                     ->on('roles')
-                    ->restrictOnDelete();
+                    ->cascadeOnDelete()
+                    ->default();
           
+            $table->boolean('activo')->default(true);
             // Borrados de la tabla original
             $table->dropColumn('name');
         });
@@ -47,6 +49,7 @@ return new class extends Migration
             $table->dropColumn('fecha_nacimiento');
             $table->dropColumn('porcentaje_discapacidad');
             $table->dropColumn('rol');
+            $table->dropColumn('activo');
 
             // Restaurar campos generados originalmente
             $table->string('name');

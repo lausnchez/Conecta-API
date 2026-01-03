@@ -27,15 +27,35 @@ class Eventos extends Model
 
     protected $hidden = ['created_at','updated_at'];
 
-    protected function casts(): array
-    {
-        return [
-            'fecha_evento' => 'datetime',
-            'valoracion' => 'decimal:2',
-            'num_participantes' => 'integer',
-            'es_accesible' => 'boolean',
-        ];
+    protected $casts = [
+        'fecha_evento' => 'datetime',
+        'valoracion' => 'decimal:2',
+        'num_participantes' => 'integer',
+        'es_accesible' => 'boolean',
+    ];
+
+
+    // RELACIONES
+    //-------------------------------------------------------
+    public function categoria(){
+        return $this->belongsTo(Categorias::class, 'id_categoria');
     }
+
+    public function entidad(){
+        return $this->belongsTo(Entidades::class, 'id_entidad');
+    }
+
+    public function creador(){
+        return $this->belongsTo(User::class, 'id_creador');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tags::class, 'eventos_tags', 'id_evento', 'id_tag');
+    }
+
+
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
 
     /**
      * Obtiene todos los eventos
@@ -58,22 +78,4 @@ class Eventos extends Model
         return self::find($id);
     }
 
-
-    // RELACIONES
-    //-------------------------------------------------------
-    public function categoria(){
-        return $this->belongsTo(Categorias::class, 'id_categoria');
-    }
-
-    public function entidad(){
-        return $this->belongsTo(Entidades::class, 'id_entidad');
-    }
-
-    public function creador(){
-        return $this->belongsTo(User::class, 'id_creador');
-    }
-
-    public function tags(){
-        return $this->belongsToMany(Tags::class, 'eventos_tags', 'id_evento', 'id_tag');
-    }
 }

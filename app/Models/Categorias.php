@@ -22,4 +22,8 @@ class Categorias extends Model
     public function eventos(){
         return $this->hasMany(Eventos::class);
     }
+
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
+    
 }

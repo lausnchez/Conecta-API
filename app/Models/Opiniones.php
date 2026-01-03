@@ -19,12 +19,9 @@ class Opiniones extends Model
     ];
 
     protected $hidden = ['created_at','updated_at'];
-    protected function casts(): array
-    {
-        return [
-            'valoracion' => 'decimal:2',
-        ];
-    }
+    protected $casts = [
+        'valoracion' => 'decimal:2',
+    ];
 
     // RELACIONES
     //-------------------------------------------------------
@@ -35,4 +32,8 @@ class Opiniones extends Model
     public function evento(){
         return $this->belongsTo(Eventos::class, 'id_evento');
     }
+
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
+    
 }

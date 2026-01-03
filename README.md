@@ -28,7 +28,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 1. **Generar un .env a partir de ejemplo** y insertar los datos de la bbdd. Importante mirar que está puesto en `mysql` y no en sqlite en DB_CONNECTION.
 2. Generar una APP_KEY con `php artisan key:generate`.
 3. Crear el vendor con `composer install`. 
-4. Crear la base de datos en local vacía con el mismo nombre que la hayáis puesto en el .env.
+4. Crear la base de datos en local vacía con el mismo nombre que la hayáis puesto en el .env. También se puede crear al realizar las migraciones gracias a composer.
 5. Generar las migraciones de las tablas default de la API con `php artisan migrate`.
 
 > [!CAUTION]
@@ -82,6 +82,15 @@ Todavía no está desarrollado.
 - [x] Tags
 - [x] Opiniones
 - [x] Roles
+
+### Métodos del modelo
+- [ ] Usuarios 
+- [ ] Entidades 
+- [ ] Eventos
+- [ ] Categorías
+- [ ] Tags
+- [ ] Opiniones
+- [ ] Roles
 
 ### Controladores
 - [ ] Usuarios 

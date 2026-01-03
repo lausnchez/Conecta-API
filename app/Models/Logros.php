@@ -19,14 +19,15 @@ class Logros extends Model
 
     protected $hidden = [];
 
-    protected function casts(): array
-    {
-        return [
-            'meta' => 'integer',
-        ];
-    }
+    protected $casts = [
+        'meta' => 'integer',
+    ];
 
     // RELACIONES
+    //-------------------------------------------------------
+    
+
+    // MÉTODOS PROPIOS
     //-------------------------------------------------------
     
 }
