@@ -17,8 +17,14 @@ class DatabaseSeeder extends Seeder
     {
         // User::factory(10)->create();
 
+        // Llamar a los seeders con las fk
+        $this->call([
+            RolesSeeder::class,
+        ]);
+
+        // Crear usuarios
         User::factory()->create([
-            'name' => 'Test User',
+            'nombre' => 'Test User',
             'email' => 'test@example.com',
         ]);
     }

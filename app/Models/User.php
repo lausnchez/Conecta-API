@@ -129,8 +129,19 @@ class User extends Authenticatable
     // SCOPES
     //-------------------------------------------------------
 
-    public function buscar_empresas(){
+    /**
+     * Recoger los usuarios activos actualmente
+     */
+    public function scopeActivos($query)
+    {
+        return $query->where('activo', 1);
+    }
 
+    /**
+     * Recoge los usuarios que son empresas
+     */
+    public function scopeEmpresas($query){
+        return $query->where('es_empresa', true)->where('rol', 3);
     }
     
 }

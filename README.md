@@ -29,7 +29,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 2. Generar una APP_KEY con `php artisan key:generate`.
 3. Crear el vendor con `composer install`. 
 4. Crear la base de datos en local vacía con el mismo nombre que la hayáis puesto en el .env. También se puede crear al realizar las migraciones gracias a composer.
-5. Generar las migraciones de las tablas default de la API con `php artisan migrate`.
+5. Generar las migraciones de las tablas default de la API con `php artisan migrate --seed`. La API se encarga de crear los roles mediante un seeder.
 
 > [!CAUTION]
 > No se sabe de momento si al importar se deben de hacer configuraciones iniciales de Sanctum y Breeze, estamos mirando a ver como funciona en repositorios compartidos. De momento no le hagáis caso, no debería de afectaros en nada al desarrollar.
