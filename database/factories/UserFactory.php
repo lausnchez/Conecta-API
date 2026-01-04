@@ -34,6 +34,7 @@ class UserFactory extends Factory
         $rolId = \App\Models\Roles::pluck('id')->random();
 
         return [
+            'username' => $this->faker->unique()->userName(),
             'nombre' => $this->faker->firstName(),
             'apellido' => $this->faker->lastName(),
             'email' => $this->faker->unique()->safeEmail(),

@@ -15,6 +15,6 @@ class RolesSeeder extends Seeder
     {
         Roles::updateOrCreate(['id' => 1], ['nombre' => 'Admin']);
         Roles::updateOrCreate(['id' => 2], ['nombre' => 'Developer']);
-        Roles::updateOrCreate(['id' => 3], ['nombre' => 'Client']);
+        Roles::updateOrCreate(['id' => 3], ['nombre' => 'General-User']);
     }
 }

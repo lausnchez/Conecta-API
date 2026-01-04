@@ -23,11 +23,11 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 
 ## 💾 Al importar en el PC
 > [!IMPORTANT]
-> La URL base es: `www.url-temporal.com`. A partir de ahí se deben agregar los endpoints de cada función.
+> La URL base es: `www.url-temporal.com/v1`. A partir de ahí se deben agregar los endpoints de cada función.
 
 1. **Generar un .env a partir de ejemplo** y insertar los datos de la bbdd. Importante mirar que está puesto en `mysql` y no en sqlite en DB_CONNECTION.
-2. Generar una APP_KEY con `php artisan key:generate`.
-3. Crear el vendor con `composer install`. 
+2. Crear el vendor con `composer install`. 
+3. Generar una APP_KEY con `php artisan key:generate`.
 4. Crear la base de datos en local vacía con el mismo nombre que la hayáis puesto en el .env. También se puede crear al realizar las migraciones gracias a composer.
 5. Generar las migraciones de las tablas default de la API con `php artisan migrate --seed`. La API se encarga de crear los roles mediante un seeder.
 
@@ -47,7 +47,224 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 > Se está trabajando actualmente en: `Users`
 
 ### 💡 | Usuarios
-Todavía no está desarrollado.
+- [Todos los users](#get--todos-los-users)
+- [User por ID](#get--user-por-id)
+- [User por Username](#get--user-por-username)
+- [Users activos](#get--users-activos)
+- [Users inactivos](#get--users-inactivos)
+- [Users empresas](#get--users-que-son-empresas)
+- [Users no-empresas](#get--users-que-no-son-empresas)
+- [Users familiares](#get--users-que-son-familiares)
+- [Users no-familiares](#get--users-que-no-son-familiares)
+- [Users Admins](#get--users-admins)
+- [Users Developers](#get--users-developers)
+- [Users General-Users](#get--users-general-users)
+
+
+#### GET | Todos los users
+- Método: **GET**
+
+- **URL: `/users`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+    
+]
+```
+#### GET | User por ID
+- Método: **GET**
+
+- **URL: `users/{id}`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | User por Username
+- Método: **GET**
+
+- **URL: `/username/{username}`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users activos
+- Método: **GET**
+
+- **URL: `/users/activos`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users inactivos
+- Método: **GET**
+
+- **URL: `/users/inactivos`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users que son empresas
+- Método: **GET**
+
+- **URL: `users/empresas`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users que no son empresas
+- Método: **GET**
+
+- **URL: `users/no-empresas`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users que son familiares
+- Método: **GET**
+
+- **URL: `/users/familiares`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users que no son familiares
+- Método: **GET**
+
+- **URL: `/users/no-familiares`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users Admins
+- Método: **GET**
+
+- **URL: `/users/admins`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users Developers
+- Método: **GET**
+
+- **URL: `/users/developers`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
+#### GET | Users General-Users
+- Método: **GET**
+
+- **URL: `/users/general-users`**
+
+- Body de la request:
+```json
+[
+
+]
+```
+- Respuesta:
+```json
+[
+
+]
+```
 
 ### 💡 | Eventos
 Todavía no está desarrollado.
@@ -84,7 +301,7 @@ Todavía no está desarrollado.
 - [x] Roles
 
 ### Métodos del modelo
-- [ ] Usuarios 
+- [x] Usuarios 
 - [ ] Entidades 
 - [ ] Eventos
 - [ ] Categorías
@@ -93,7 +310,16 @@ Todavía no está desarrollado.
 - [ ] Roles
 
 ### Controladores
-- [ ] Usuarios 
+- [x] Usuarios 
+- [ ] Entidades 
+- [ ] Eventos
+- [ ] Categorías
+- [ ] Tags
+- [ ] Opiniones
+- [ ] Roles
+
+### Routing
+- [x] Usuarios 
 - [ ] Entidades 
 - [ ] Eventos
 - [ ] Categorías

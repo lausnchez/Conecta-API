@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('users', function (Blueprint $table) {
+            $table->string('username', 20)->unique(true);
             $table->string('nombre', 100);
             $table->string('apellido', 100);
 
@@ -41,6 +42,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             // Borrar campos creados manualmente
+            $table->dropColumn('username');
             $table->dropColumn('nombre');
             $table->dropColumn('apellido');
             $table->dropColumn('telefono');

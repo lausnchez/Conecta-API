@@ -20,12 +20,13 @@ class DatabaseSeeder extends Seeder
         // Llamar a los seeders con las fk
         $this->call([
             RolesSeeder::class,
+            UsersSeeder::class,
         ]);
 
         // Crear usuarios
-        User::factory()->create([
-            'nombre' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        // User::factory()->create([
+        //     'nombre' => 'Test User',
+        //     'email' => 'test@example.com',
+        // ]);
     }
 }

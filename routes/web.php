@@ -17,5 +17,6 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// require __DIR__.'/conecta-api.php';
 require __DIR__.'/auth.php';
-require __DIR__.'/conecta-api.php';
+require __DIR__.'/UserRoutes.php';   // Rutas de Users

@@ -3,9 +3,15 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+
+use Illuminate\Database\Eloquent\Attributes\Scope;
+use Illuminate\Database\Eloquent\Builder as EloquentBuilder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Builder;
+use phpDocumentor\Reflection\Types\Boolean;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class User extends Authenticatable
 {
@@ -18,6 +24,7 @@ class User extends Authenticatable
      * @var list<string>
      */
     protected $fillable = [
+        'username',
         'nombre',
         'apellido',
         'telefono',
@@ -47,6 +54,7 @@ class User extends Authenticatable
      * @return array<string, string>
      */
     protected $casts = [
+        'username' => 'string',
         'email_verified_at' => 'datetime',
         'fecha_nacimiento' => 'date',
         'es_empresa' => 'boolean',
@@ -130,18 +138,63 @@ class User extends Authenticatable
     //-------------------------------------------------------
 
     /**
-     * Recoger los usuarios activos actualmente
+     * Recoger los usuarios según si están activos o inactivos actualmente
+     *
+     * @param Builder $query
+     * @param bool $state Boolean que dice si el usuario está activo o no
+     * @return Builder
      */
-    public function scopeActivos($query)
-    {
-        return $query->where('activo', 1);
+    public function scopeActivo(Builder $query, bool $state): Builder{
+        // return $query->where('activo', $state);
+        return $query->where('activo', $state ? 1 : 0);
     }
 
     /**
-     * Recoge los usuarios que son empresas
+     * Recoge los usuarios según si son o no empresas
+     * 
+     * @param Builder $query
+     * @param bool $state Boolean que dice si es una empresa o no
+     * @return Builder
      */
-    public function scopeEmpresas($query){
-        return $query->where('es_empresa', true)->where('rol', 3);
+    public function scopeEmpresas(Builder $query, bool $state): Builder{
+        return $query->where('es_empresa', $state);
     }
     
+    /**
+     * Recoge los usuarios según si son familiares o no
+     * 
+     * @param Builder $query
+     * @param bool $state Boolean que dice si es familiar o no
+     * @return Builder
+     */
+    public function scopeFamiliar(Builder $query , bool $state): Builder{
+        return $query->where('es_familiar', $state);
+    }
+
+    /**
+     * Recoge los usuarios según el rol que tienen
+     * 
+     * @param Builder $query
+     * @param int $rol ID del rol que se quiere buscar
+     * @return Builder
+     */
+    public function scopePorRol(Builder $query, int $rol): Builder{
+        // Comprobar que el rol existe
+        if (!Roles::where('id', $rol)->exists()){
+            throw new ModelNotFoundException("El rol {$rol} no existe");
+        }
+
+        return $query->where('rol', $rol);
+    }
+
+    /**
+     * Recoge un usuario buscando por su Username único
+     * 
+     * @param Builder $query
+     * @param string $username Username único del usuario que se quiere buscar
+     * @return Builder
+     */
+    public function scopeUsername(Builder $query, string $username): Builder{
+        return $query->where('username', $username);
+    }
 }
