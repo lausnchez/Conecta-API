@@ -46,6 +46,9 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'created_at',
+        'updated_at',
+        'email_verified_at',
     ];
 
     /**
@@ -67,7 +70,7 @@ class User extends Authenticatable
     // RELACIONES
     //-------------------------------------------------------
     public function rol(){
-        return $this->belongsTo(Roles::class);
+        return $this->belongsTo(Roles::class, 'rol', 'id');
     }
 
     public function eventos(){
@@ -76,6 +79,7 @@ class User extends Authenticatable
 
     // MÉTODOS PROPIOS
     //-------------------------------------------------------
+
 
     /**
      * Devuelve el nombre completo del usuario concatenando nombre y apellidos.
@@ -195,6 +199,40 @@ class User extends Authenticatable
      * @return Builder
      */
     public function scopeUsername(Builder $query, string $username): Builder{
-        return $query->where('username', $username);
+        return $query->where('username', 'LIKE', $username.'%');
+    }
+
+    /**
+     * Recoge un usuario buscando por su nombre
+     * 
+     * @param Builder $query
+     * @param string $nombre Nombre del usuario que se quiere buscar
+     * @return Builder
+     */
+    public function scopeNombre(Builder $query, string $nombre): Builder{
+        return $query->where('nombre', 'LIKE', $nombre.'%');
+    }
+
+    /**
+     * Recoge un usuario buscando por sus apellidos
+     * 
+     * @param Builder $query
+     * @param string $apellido Apellidos del usuario que se quiere buscar
+     * @return Builder
+     */
+    public function scopeApellido(Builder $query, string $apellido): Builder{
+        return $query->where('apellido', 'LIKE', $apellido.'%');
+    }
+
+    /**
+     * Comprueba que la búsqueda es coincidente con el nombre o el apellido del
+     * usuario. 
+     * 
+     * @param Builder $query
+     * @param string $busqueda Búsqueda que se quiere hacer en nombres y apellidos
+     * @return Builder
+     */
+    public function scopeNombreCompleto(Builder $query, string $busqueda): Builder{
+        return $query->where('nombre', 'LIKE', $busqueda.'%')->orWhere('apellido', 'LIKE', $busqueda.'%')->orWhere('username', 'LIKE', $busqueda.'%');
     }
 }

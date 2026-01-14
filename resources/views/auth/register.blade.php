@@ -2,11 +2,25 @@
     <form method="POST" action="{{ route('register') }}">
         @csrf
 
-        <!-- Name -->
+        <!-- Name NUEVO USERNAME -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+            <x-input-label for="username" :value="__('Username')" />
+            <x-text-input id="username" class="block mt-1 w-full" type="text" name="username" :value="old('username')" required autofocus autocomplete="username" />
+            <x-input-error :messages="$errors->get('username')" class="mt-2" />
+        </div>
+
+        <!-- First Name NUEVO -->
+        <div class="mt-4">
+            <x-input-label for="nombre" :value="__('Nombre')" />
+            <x-text-input id="nombre" class="block mt-1 w-full" type="text" name="nombre" :value="old('nombre')" required autofocus autocomplete="given-name" />
+            <x-input-error :messages="$errors->get('nombre')" class="mt-2" />
+        </div>
+
+        <!-- Last Name NUEVO -->
+        <div class="mt-4">
+            <x-input-label for="apellido" :value="__('Apellido')" />
+            <x-text-input id="apellido" class="block mt-1 w-full" type="text" name="apellido" :value="old('apellido')" required autocomplete="family-name" />
+            <x-input-error :messages="$errors->get('apellido')" class="mt-2" />
         </div>
 
         <!-- Email Address -->

@@ -1,6 +1,6 @@
 # Conecta API
 > [!NOTE]
-> Ya están disponibles las migraciones de la base de datos. Tenéis la estructura más abajo por si la necesitáis. **Se está trabajando actualmente en los modelos**.
+> Ya está terminada la funcionalidad básica de **Users** de la API. Setrabajará ahora en **Events** y en el dashboard para que podáis manejar mejor los datos de la bbdd, pero no es prioritario.
 
 API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la Hackathon del municipio de 2025/2026.
 
@@ -19,11 +19,9 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
 
-[Cosas por hacer](#️-cosas-por-hacer)
-
 ## 💾 Al importar en el PC
 > [!IMPORTANT]
-> La URL base es: `www.url-temporal.com/v1`. A partir de ahí se deben agregar los endpoints de cada función.
+> La URL base es: `www.url-temporal.com/api/v1`. A partir de ahí se deben agregar los endpoints de cada función.
 
 1. **Generar un .env a partir de ejemplo** y insertar los datos de la bbdd. Importante mirar que está puesto en `mysql` y no en sqlite en DB_CONNECTION.
 2. Crear el vendor con `composer install`. 
@@ -47,224 +45,1121 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 > Se está trabajando actualmente en: `Users`
 
 ### 💡 | Usuarios
-- [Todos los users](#get--todos-los-users)
-- [User por ID](#get--user-por-id)
-- [User por Username](#get--user-por-username)
-- [Users activos](#get--users-activos)
-- [Users inactivos](#get--users-inactivos)
-- [Users empresas](#get--users-que-son-empresas)
-- [Users no-empresas](#get--users-que-no-son-empresas)
-- [Users familiares](#get--users-que-son-familiares)
-- [Users no-familiares](#get--users-que-no-son-familiares)
-- [Users Admins](#get--users-admins)
-- [Users Developers](#get--users-developers)
-- [Users General-Users](#get--users-general-users)
+
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``Username``| VARCHAR(20)|
+| ``Email``| VARCHAR(255)|
+| ``Password``| VARCHAR(255)|
+| ``Nombre``| VARCHAR(100)|
+| ``Apellido``| VARCHAR(100)|
+| ``Teléfono``| VARCHAR(20)|
+| ``Porcentaje de discapacidad``| DECIMAL(5,2)|
+
+---
+Endpoints:
+
+- [**GET** | Todos los users](#get--todos-los-users)
+- [**GET** | User por ID](#get--user-por-id)
+- [**GET** | User por Username](#get--user-por-username)
+- [**GET** | Users por coincidencias en el nombre completo o username](#get--users-por-coincidencias-en-el-nombre-completo-y-el-username)
+- [**GET** | Users activos](#get--users-activos)
+- [**GET** | Users inactivos](#get--users-inactivos)
+- [**GET** | Users empresas](#get--users-que-son-empresas)
+- [**GET** | Users no-empresas](#get--users-que-no-son-empresas)
+- [**GET** | Users familiares](#get--users-que-son-familiares)
+- [**GET** | Users no-familiares](#get--users-que-no-son-familiares)
+- [**GET** | Users Admins](#get--users-admins)
+- [**GET** | Users Developers](#get--users-developers)
+- [**GET** | Users General-Users](#get--users-general-users)
+- [**POST** | Crear nuevo User](#post--crear-nuevo-user)
+- [**DELETE** | Borrar un user](#delete--borrar-un-user)
+- [**PATCH** | Actualizar user ya existente (parcial)](#patch--actualizar-user-ya-existente-parcial)
+- [**PUT** | Actualizar user ya existente (completo)](#put--actualizar-user-ya-existente-completo)
+
+---
+### GET | Todos los users
+- **Método**: GET
+- **URL**: **`/users`** / `/users?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.          |
 
 
-#### GET | Todos los users
-- Método: **GET**
-
-- **URL: `/users`**
-
-- Body de la request:
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    }
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users?page=1",
+  "from": 1,
+  "last_page": 2,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users?page=2",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users?page=2",
+      "label": "Next &raquo;",
+      "page": 2,
+      "active": false
+    }
+  ],
+  "next_page_url": "http://127.0.0.1:8000/api/v1/users?page=2",
+  "path": "http://127.0.0.1:8000/api/v1/users",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 10,
+  "total": 20
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+---
+### GET | User por ID
+- **Método**: GET
+- **URL**: **`/user/{id}`**
+- **Descripción**: Devuelve el usuario con el ID insertado. Si no hay coincidencias dará error 404. 
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si      | ID del usuario que se quiera encontrar.|
+
+
+Respuesta (**200 OK**):
 ```json
-[
-    
-]
+{
+  "id": 1,
+  "email": "wilfred71@example.com",
+  "username": "rwalter",
+  "nombre": "Eliseo",
+  "apellido": "Romaguera",
+  "telefono": "+1.724.413.1142",
+  "es_empresa": false,
+  "es_familiar": false,
+  "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+  "porcentaje_discapacidad": "68.84",
+  "rol": {
+    "id": 1,
+    "nombre": "Admin"
+  },
+  "activo": true
+}
 ```
-#### GET | User por ID
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `users/{id}`**
 
-- Body de la request:
+---
+### GET | User por Username
+- **Método**: GET
+- **URL**: **`/users/username/{username}`** / `/users/username/?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios cuyo username coincida con el parámetro pasado. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Username ``      | string       | Si      | Username del usuario. Comprueba coincidencias con el inicio del username.      |
+| ``Num_Pagina ``      | integer       | No      | Número de página de la búsqueda. La página 0 es igual que la página 1.        |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    }
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/username/rwalter?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/username/rwalter?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/username/rwalter?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/username/rwalter",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 1,
+  "total": 1
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+
+---
+### GET | Users por coincidencias en el nombre completo y el username
+- **Método**: GET
+- **URL**: **`/users/search/{busqueda}`** / `/users/search/{busqueda}?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios de la base de datos cuyo nombre, apellido, o username comience con el parámetro de búsqueda. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Busqueda ``      | string      | Si       | Parámetro de búsqueda.       |
+| ``Num_Pagina ``      | integer       | No      | Número de página de la búsqueda. La página 0 es igual que la página 1.       |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 18,
+      "email": "fleta58@example.org",
+      "username": "usteuber",
+      "nombre": "Delia",
+      "apellido": "Kulas",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": null,
+      "porcentaje_discapacidad": "57.53",
+      "rol": {
+        "id": 3,
+        "nombre": "User"
+      },
+      "activo": false
+    },
+    {
+      "id": 19,
+      "email": "qlubowitz@example.net",
+      "username": "yheathcote",
+      "nombre": "Destiney",
+      "apellido": "Frami",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "2014-10-23T00:00:00.000000Z",
+      "porcentaje_discapacidad": "5.76",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    }
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/search/de?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/search/de?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/search/de?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/search/de",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 2,
+  "total": 2
+}
 ```
-#### GET | User por Username
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `/username/{username}`**
 
-- Body de la request:
+---
+### GET | Users activos
+- **Método**: GET
+- **URL**: **`/users/activos`** / `/users/activos?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios definidos como activos en la base de datos. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.     |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/activos?page=1",
+  "from": 1,
+  "last_page": 2,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/activos?page=2",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/activos?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/activos?page=2",
+      "label": "2",
+      "page": 2,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/activos?page=2",
+      "label": "Next &raquo;",
+      "page": 2,
+      "active": false
+    }
+  ],
+  "next_page_url": "http://127.0.0.1:8000/api/v1/users/activos?page=2",
+  "path": "http://127.0.0.1:8000/api/v1/users/activos",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 10,
+  "total": 17
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+
+---
+### GET | Users inactivos
+- **Método**: GET
+- **URL**: **`/users/inactivos`** / `/users/inactivos?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios definidos como inactivos de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 8,
+      "email": "xbradtke@example.com",
+      "username": "eferry",
+      "nombre": "Kari",
+      "apellido": "Murphy",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": true,
+      "fecha_nacimiento": "1993-09-07T00:00:00.000000Z",
+      "porcentaje_discapacidad": "49.23",
+      "rol": {
+        "id": 2,
+        "nombre": "Developer"
+      },
+      "activo": false
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/inactivos?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/inactivos?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/inactivos?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/inactivos",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 3,
+  "total": 3
+}
 ```
-#### GET | Users activos
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `/users/activos`**
 
-- Body de la request:
+---
+### GET | Users que son empresas
+- **Método**: GET
+- **URL**: **`/users/empresas`** / `/users/empresas?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios definidos como empresa de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 20,
+      "email": "drutherford@example.org",
+      "username": "tanya.becker",
+      "nombre": "Kira",
+      "apellido": "Rice",
+      "telefono": null,
+      "es_empresa": true,
+      "es_familiar": false,
+      "fecha_nacimiento": "1990-03-17T00:00:00.000000Z",
+      "porcentaje_discapacidad": "76.75",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/empresas?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/empresas?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/empresas?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/empresas",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 5,
+  "total": 5
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+
+---
+### GET | Users que no son empresas
+- **Método**: GET
+- **URL**: **`/users/no-empresas`** / `/users/no-empresas?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios no definidos como empresa de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=1",
+  "from": 1,
+  "last_page": 2,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=2",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=2",
+      "label": "2",
+      "page": 2,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=2",
+      "label": "Next &raquo;",
+      "page": 2,
+      "active": false
+    }
+  ],
+  "next_page_url": "http://127.0.0.1:8000/api/v1/users/no-empresas?page=2",
+  "path": "http://127.0.0.1:8000/api/v1/users/no-empresas",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 10,
+  "total": 15
+}
 ```
-#### GET | Users inactivos
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `/users/inactivos`**
 
-- Body de la request:
+---
+### GET | Users que son familiares
+- **Método**: GET
+- **URL**: **`/users/familiares`** / `/users/familiares?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios definidos como familiar de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 8,
+      "email": "xbradtke@example.com",
+      "username": "eferry",
+      "nombre": "Kari",
+      "apellido": "Murphy",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": true,
+      "fecha_nacimiento": "1993-09-07T00:00:00.000000Z",
+      "porcentaje_discapacidad": "49.23",
+      "rol": {
+        "id": 2,
+        "nombre": "Developer"
+      },
+      "activo": false
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/familiares?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/familiares?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/familiares?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/familiares",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 2,
+  "total": 2
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+
+---
+### GET | Users que no son familiares
+- **Método**: GET
+- **URL**: **`/users/no-familiares`** / `/users/no-familiares?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios no definidos como familiar de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=1",
+  "from": 1,
+  "last_page": 2,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=2",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=2",
+      "label": "2",
+      "page": 2,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=2",
+      "label": "Next &raquo;",
+      "page": 2,
+      "active": false
+    }
+  ],
+  "next_page_url": "http://127.0.0.1:8000/api/v1/users/no-familiares?page=2",
+  "path": "http://127.0.0.1:8000/api/v1/users/no-familiares",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 10,
+  "total": 18
+}
 ```
-#### GET | Users que son empresas
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `users/empresas`**
 
-- Body de la request:
+---
+### GET | Users Admins
+- **Método**: GET
+- **URL**: **`/users/admins`** / `/users/admins?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios con el rol de "Admin" de la base de datos. En caso de usar la primera url se dará la primera página. Paginada, muestra 10 resultados por página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 1,
+      "email": "wilfred71@example.com",
+      "username": "rwalter",
+      "nombre": "Eliseo",
+      "apellido": "Romaguera",
+      "telefono": "+1.724.413.1142",
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1985-06-05T00:00:00.000000Z",
+      "porcentaje_discapacidad": "68.84",
+      "rol": {
+        "id": 1,
+        "nombre": "Admin"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/admins?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/admins?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/admins?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/admins",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 9,
+  "total": 9
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+
+---
+### GET | Users Developers
+- **Método**: GET
+- **URL**: **`/users/developers`** / `/users/developers?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios con el rol de "Developer" de la base de datos. En caso de usar la primera url se dará la primera página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 4,
+      "email": "gregg02@example.com",
+      "username": "dickens.connor",
+      "nombre": "Thea",
+      "apellido": "Rogahn",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "1997-12-10T00:00:00.000000Z",
+      "porcentaje_discapacidad": "97.33",
+      "rol": {
+        "id": 2,
+        "nombre": "Developer"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/developers?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/developers?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/developers?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/developers",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 3,
+  "total": 3
+}
 ```
-#### GET | Users que no son empresas
-- Método: **GET**
+[Volver arriba](#-índice)
 
-- **URL: `users/no-empresas`**
 
-- Body de la request:
+---
+### GET | Users General-Users
+- **Método**: GET
+- **URL**: **`/users/general-users`** / `/users/general-users?page={num_pagina}` (opcional)
+- **Descripción**: Devuelve todos los usuarios con el rol de "General User" de la base de datos. En caso de usar la primera url se dará la primera página.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Num_Pagina ``      | integer       | No       | En caso de no darse se mostrará la primera página. La página 0 es igual que la página 1.      |
+
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+  "current_page": 1,
+  "data": [
+    {
+      "id": 3,
+      "email": "bwunsch@example.net",
+      "username": "keeling.cheyanne",
+      "nombre": "Ellis",
+      "apellido": "Grimes",
+      "telefono": null,
+      "es_empresa": false,
+      "es_familiar": false,
+      "fecha_nacimiento": "2018-09-18T00:00:00.000000Z",
+      "porcentaje_discapacidad": "18.14",
+      "rol": {
+        "id": 3,
+        "nombre": "User"
+      },
+      "activo": true
+    },
+  ],
+  "first_page_url": "http://127.0.0.1:8000/api/v1/users/general-users?page=1",
+  "from": 1,
+  "last_page": 1,
+  "last_page_url": "http://127.0.0.1:8000/api/v1/users/general-users?page=1",
+  "links": [
+    {
+      "url": null,
+      "label": "&laquo; Previous",
+      "page": null,
+      "active": false
+    },
+    {
+      "url": "http://127.0.0.1:8000/api/v1/users/general-users?page=1",
+      "label": "1",
+      "page": 1,
+      "active": true
+    },
+    {
+      "url": null,
+      "label": "Next &raquo;",
+      "page": null,
+      "active": false
+    }
+  ],
+  "next_page_url": null,
+  "path": "http://127.0.0.1:8000/api/v1/users/general-users",
+  "per_page": 10,
+  "prev_page_url": null,
+  "to": 8,
+  "total": 8
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nuevo User
+- **Método**: POST
+- **URL**: **`/user`**
+- **Descripción**: Crea un nuevo usuario en la base de datos a partir de un conjunto de datos. Es obligatorio insertar mínimo el **email**, **password**, **username**, **nombre**, y **apellido**. En caso de no ponerlos *es_empresa* y *es_familiar* se pondrán default a false, *porcentaje_discapacidad* a 0, y el rol a *General-User*.
+
+Body de la request:
 ```json
-[
-
-]
+{
+  "username": "juanperez",
+  "email": "juanperez@mail.com",
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "telefono": "+34600111222",
+  "es_empresa": false,
+  "fecha_nacimiento": "1995-06-20",
+  "porcentaje_discapacidad": 15,
+  "rol": 3,
+  "password": "Secreta123!",
+  "password_confirmation": "Secreta123!"
+}
 ```
-#### GET | Users que son familiares
-- Método: **GET**
 
-- **URL: `/users/familiares`**
-
-- Body de la request:
+Respuesta (**201 OK**):
 ```json
-[
-
-]
+{
+    "username": "juanperez",
+    "email": "juanperez@mail.com",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "telefono": "+34600111222",
+    "es_empresa": false,
+    "fecha_nacimiento": "1995-06-20T00:00:00.000000Z",
+    "porcentaje_discapacidad": "15.00",
+    "rol": 3,
+    "id": 28
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar un user
+- **Método**: DELETE
+- **URL**: **`/user/{id}`**
+- **Descripción**: Elimina el user de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si       | ID del usuario que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar User ya existente (PARCIAL)
+- **Método**: PATCH
+- **URL**: **`/user/{id}`**
+- **Descripción**: Actualiza uno o varios campos de un usuario. Solo deben enviarse los campos que se desean modificar.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       | ID del usuario que se quiere modificar.      |
+| `username`      | string       | No       |       |
+| `nombre`      | string       | No       |       |
+| `apellido`      | string       | No       |       |
+| `email`      | string       | No       |       |
+| `telefono`      | string / null      | No       |       |
+| `es_empresa`      | boolean      | No       |       |
+| `es_familiar`      | boolean       | No       |       |
+| `fecha_nacimiento`      | date       | No       | Formato YYYY-MM-DD      |
+| `activo`      | boolean       | No       | Deprecated. No se usa.      |
+
+
+Body de la request (poner sólo los campos que se quieran cambiar):
 ```json
-[
-
-]
+{
+  "username": "nuevo_usuario",
+  "email": "nuevo_email@mail.com",
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "telefono": "+34600111222",
+  "es_empresa": false,
+  "fecha_nacimiento": "1995-06-20",
+  "porcentaje_discapacidad": 15,
+  "rol": 3,
+  "password": "NuevaPassword123!",
+  "password_confirmation": "NuevaPassword123!"
+}
 ```
-#### GET | Users que no son familiares
-- Método: **GET**
 
-- **URL: `/users/no-familiares`**
-
-- Body de la request:
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+    "id": 2,
+    "email": "nuevo_email@mail.com",
+    "username": "nuevo_usuario",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "telefono": "+34600111222",
+    "es_empresa": false,
+    "es_familiar": false,
+    "fecha_nacimiento": "1995-06-20T00:00:00.000000Z",
+    "porcentaje_discapacidad": "15.00",
+    "rol": 3,
+    "activo": true
+}
 ```
-- Respuesta:
+[Volver arriba](#-índice)
+
+---
+### PUT | Actualizar User ya existente (COMPLETO)
+- **Método**: PUT
+- **URL**: **`/user/{id}`**
+- **Descripción**: Actualiza uno o varios campos de un usuario. Solo deben enviarse los campos que se desean modificar.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       | ID del usuario que se quiere modificar.      |
+| `username`      | string       | No       |       |
+| `nombre`      | string       | No       |       |
+| `apellido`      | string       | No       |       |
+| `email`      | string       | No       |       |
+| `telefono`      | string / null      | No       |       |
+| `es_empresa`      | boolean      | No       |       |
+| `es_familiar`      | boolean       | No       |       |
+| `fecha_nacimiento`      | date       | No       | Formato YYYY-MM-DD      |
+| `activo`      | boolean       | No       | Deprecated. No se usa.      |
+
+
+Body de la request:
 ```json
-[
-
-]
+{
+  "username": "jp",
+  "email": "juanperez_actualizado@mail.com",
+  "nombre": "Juan",
+  "apellido": "Pérez",
+  "telefono": "+34600111222",
+  "es_empresa": false,
+  "fecha_nacimiento": "1995-06-20",
+  "porcentaje_discapacidad": 15,
+  "rol": 3,
+  "password": "NuevaPassword123!",
+  "password_confirmation": "NuevaPassword123!"
+}
 ```
-#### GET | Users Admins
-- Método: **GET**
 
-- **URL: `/users/admins`**
-
-- Body de la request:
+Respuesta (**200 OK**):
 ```json
-[
-
-]
+{
+    "id": 2,
+    "email": "juanperez_actualizado@mail.com",
+    "username": "jp",
+    "nombre": "Juan",
+    "apellido": "Pérez",
+    "telefono": "+34600111222",
+    "es_empresa": false,
+    "es_familiar": false,
+    "fecha_nacimiento": "1995-06-20T00:00:00.000000Z",
+    "porcentaje_discapacidad": "15.00",
+    "rol": 3,
+    "activo": true
+}
 ```
-- Respuesta:
-```json
-[
+[Volver arriba](#-índice)
 
-]
-```
-#### GET | Users Developers
-- Método: **GET**
 
-- **URL: `/users/developers`**
+---
 
-- Body de la request:
-```json
-[
-
-]
-```
-- Respuesta:
-```json
-[
-
-]
-```
-#### GET | Users General-Users
-- Método: **GET**
-
-- **URL: `/users/general-users`**
-
-- Body de la request:
-```json
-[
-
-]
-```
-- Respuesta:
-```json
-[
-
-]
-```
+---
 
 ### 💡 | Eventos
 Todavía no está desarrollado.
@@ -280,53 +1175,6 @@ Todavía no está desarrollado.
 
 ### 💡 | Opiniones
 Todavía no está desarrollado.
-
-## ✏️ Cosas por hacer
-### Modelos básicos
-- [x] Usuarios 
-- [x] Entidades 
-- [x] Eventos
-- [x] Categorías
-- [x] Tags
-- [x] Opiniones
-- [x] Roles
-
-### Relaciones
-- [x] Usuarios 
-- [x] Entidades 
-- [x] Eventos
-- [x] Categorías
-- [x] Tags
-- [x] Opiniones
-- [x] Roles
-
-### Métodos del modelo
-- [x] Usuarios 
-- [ ] Entidades 
-- [ ] Eventos
-- [ ] Categorías
-- [ ] Tags
-- [ ] Opiniones
-- [ ] Roles
-
-### Controladores
-- [x] Usuarios 
-- [ ] Entidades 
-- [ ] Eventos
-- [ ] Categorías
-- [ ] Tags
-- [ ] Opiniones
-- [ ] Roles
-
-### Routing
-- [x] Usuarios 
-- [ ] Entidades 
-- [ ] Eventos
-- [ ] Categorías
-- [ ] Tags
-- [ ] Opiniones
-- [ ] Roles
-
 
 ## ❗ Tecnologías usadas (versiones)
 - PHP: 8.2

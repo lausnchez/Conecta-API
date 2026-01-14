@@ -5,9 +5,13 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rules\Password;
+use Illuminate\Support\Facades\Hash;
+
 
 class UserController extends Controller
 {
+    protected int $max_paginate = 10;
 
     // CRUD BÁSICO
     //---------------------------------------------------------
@@ -19,7 +23,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        // $users = User::all();
+        // $users = User::with('rol')->get();
+        $users = User::with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -31,7 +37,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('rol')->findOrFail($id);
         return response()->json($user);
     }
 
@@ -57,6 +63,19 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::findOrFail($id);
+
+        // Validación de los datos antes de realizar el update
+        $data = $request->validate([
+            'username' => ['sometimes', 'string', 'max:20'],
+            'email' => ['sometimes', 'email', 'unique:users,email,' . $user->id],
+            'password' => ['sometimes', 'confirmed', Password::defaults()],
+            'fecha_nacimiento' => ['sometimes', 'date'],
+        ]);
+
+        if (isset($data['password'])) {
+            $data['password'] = Hash::make($data['password']);
+        }
+
         $user->update($request->all());
         return response()->json($user);
     }
@@ -83,7 +102,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios activos
      */
     public function activos(){
-        $users = User::activo(true)->get();
+        $users = User::activo(true)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -93,7 +112,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios inactivos
      */
     public function inactivos(){
-        $users = User::activo(false)->get();
+        $users = User::activo(false)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -103,7 +122,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios que son empresas
      */
     public function empresas(){
-        $users = User::empresas(true)->get();
+        $users = User::empresas(true)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -113,7 +132,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios que son empresas
      */
     public function no_empresas(){
-        $users = User::empresas(false)->get();
+        $users = User::empresas(false)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -123,7 +142,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios que son empresas
      */
     public function familiares(){
-        $users = User::familiar(true)->get();
+        $users = User::familiar(true)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -133,7 +152,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios que son empresas
      */
     public function no_familiares(){
-        $users = User::familiar(false)->get();
+        $users = User::familiar(false)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -143,7 +162,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios por el rol insertado
      */
     public function admins(){
-        $users = User::porRol(1)->get();
+        $users = User::porRol(1)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -153,7 +172,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios por el rol insertado
      */
     public function developers(){
-        $users = User::porRol(2)->get();
+        $users = User::porRol(2)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -163,7 +182,7 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Listado de usuarios por el rol insertado
      */
     public function users(){
-        $users = User::porRol(3)->get();
+        $users = User::porRol(3)->with('rol')->paginate($this->max_paginate);
         return response()->json($users);
     }
 
@@ -174,13 +193,27 @@ class UserController extends Controller
      * @return \Illuminate\Http\JsonResponse Usuario con el username insertado
      */
     public function username($username){
-        $user = User::username($username)->first();
+        // $user = User::username($username)->with('rol')->first();
+        $user = User::username($username)->with('rol')->paginate($this->max_paginate);
 
         if(!$user){
             return response()->json([
                 'error'=> 'Usuario no encontrado',
             ], 404);
         }
+        return response()->json($user);
+    }
+
+    /**
+     * Recoge un usuario buscando por su nombre y su apellido
+     * 
+     * @param string $nombre Nombre del usuario
+     * @param string $apellido Apellido(s) del usuario
+     * @return \Illuminate\Http\JsonResponse Usuario con nombre y apellidos coincidentes
+     */
+    public function nombreCompleto($busqueda){
+        // $user = User::nombre($nombre)->apellido($apellido)->with('rol')->get();
+        $user = User::nombreCompleto($busqueda)->with('rol')->paginate($this->max_paginate);
         return response()->json($user);
     }
 }

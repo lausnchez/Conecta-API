@@ -19,7 +19,7 @@ class Roles extends Model
     // RELACIONES
     //-------------------------------------------------------
     public function users(){
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'rol', 'id');
     }
 
     // MÉTODOS PROPIOS
