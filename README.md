@@ -1,6 +1,6 @@
 # Conecta API
 > [!NOTE]
-> Ya está terminada la funcionalidad básica de **Users** de la API. Setrabajará ahora en **Events** y en el dashboard para que podáis manejar mejor los datos de la bbdd, pero no es prioritario.
+> Ya está terminada la funcionalidad básica de **Users** de la API. Se trabajará ahora en **Events** y en el dashboard para que podáis manejar mejor los datos de la bbdd, pero no es prioritario.
 
 API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la Hackathon del municipio de 2025/2026.
 
@@ -21,7 +21,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 
 ## 💾 Al importar en el PC
 > [!IMPORTANT]
-> La URL base es: `www.url-temporal.com/api/v1`. A partir de ahí se deben agregar los endpoints de cada función.
+> La URL base es: `www.hackathon.lausnchez.es/api/v1`. A partir de ahí se deben agregar los endpoints de cada función.
 
 1. **Generar un .env a partir de ejemplo** y insertar los datos de la bbdd. Importante mirar que está puesto en `mysql` y no en sqlite en DB_CONNECTION.
 2. Crear el vendor con `composer install`. 
@@ -42,7 +42,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 
 ## ENDPOINTS
 > [!IMPORTANT]
-> Se está trabajando actualmente en: `Users`
+> Se está trabajando actualmente en: `Eventos`
 
 ### 💡 | Usuarios
 
