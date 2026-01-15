@@ -4,29 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Entidades extends Model
+class Opiniones extends Model
 {
-    protected $table = 'entidades';
+    protected $table = 'opiniones';
     protected $primaryKey = 'id';
     public $timestamps = true;
 
+    // Campos rellenables
     protected $fillable = [
-        'nombre',
-        'descripcion',
-        'es_accesible',
-        'foto_entidad'
+        'id_entidad',
+        'id_evento',
+        'contenido',
+        'valoracion',
     ];
 
     protected $hidden = ['created_at','updated_at'];
-
     protected $casts = [
-        'es_accesible' => 'boolean',
+        'valoracion' => 'decimal:2',
     ];
 
     // RELACIONES
     //-------------------------------------------------------
-    public function eventos(){
-        return $this->hasMany(Eventos::class);
+    public function entidad(){
+        return $this->belongsTo(Entidades::class, 'id_entidad');
+    }
+    
+    public function evento(){
+        return $this->belongsTo(Eventos::class, 'id_evento');
     }
 
     // MÉTODOS PROPIOS

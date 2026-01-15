@@ -6,26 +6,56 @@ use Illuminate\Database\Eloquent\Model;
 
 class Eventos extends Model
 {
-    protected $table = 'evento';
-    protected $primaryKey = 'id_evento';
-
-    //public $timestamps = false;
+    protected $table = 'eventos';
+    protected $primaryKey = 'id';
+    public $timestamps = true;
 
     // Campos rellenables
     protected $fillable = [
         'id_categoria',
+        'id_entidad',
+        'id_creador',
+        'nombre',
         'fecha_evento',
-        'tipo_evento',
-        'bool_acceso',
-        'bool_equipo',
-        'bool_masc',
         'descripcion',
+        'valoracion',
+        'ubicacion',
         'num_participantes',
-        'incidencias',
-        'valoracion'
+        'foto_evento',
+        'es_accesible',
     ];
 
     protected $hidden = ['created_at','updated_at'];
+
+    protected $casts = [
+        'fecha_evento' => 'datetime',
+        'valoracion' => 'decimal:2',
+        'num_participantes' => 'integer',
+        'es_accesible' => 'boolean',
+    ];
+
+
+    // RELACIONES
+    //-------------------------------------------------------
+    public function categoria(){
+        return $this->belongsTo(Categorias::class, 'id_categoria');
+    }
+
+    public function entidad(){
+        return $this->belongsTo(Entidades::class, 'id_entidad');
+    }
+
+    public function creador(){
+        return $this->belongsTo(User::class, 'id_creador');
+    }
+
+    public function tags(){
+        return $this->belongsToMany(Tags::class, 'eventos_tags', 'id_evento', 'id_tag');
+    }
+
+
+    // MÉTODOS PROPIOS
+    //-------------------------------------------------------
 
     /**
      * Obtiene todos los eventos
@@ -48,14 +78,4 @@ class Eventos extends Model
         return self::find($id);
     }
 
-
-    // RELACIONES
-    public function categoria(){
-        return $this->belongsTo(Categorias::class, 'id_categoria');
-    }
-
-    // Puede contener distintos reportes
-    public function reporte(){
-        return $this->hasMany(Reporte::class, 'id_reporte');
-    }
 }

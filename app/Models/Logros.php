@@ -4,24 +4,28 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categorias extends Model
+class Logros extends Model
 {
-    protected $table = "categorias";
-    protected $primaryKey = 'id';
-    public $timestamps = true;
+    protected $table = 'logros';
+    public $timestamps = false;
 
+    // Campos rellenables
     protected $fillable = [
         'nombre',
         'descripcion',
+        'meta',
+        'foto_logro',
     ];
 
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = [];
+
+    protected $casts = [
+        'meta' => 'integer',
+    ];
 
     // RELACIONES
     //-------------------------------------------------------
-    public function eventos(){
-        return $this->hasMany(Eventos::class);
-    }
+    
 
     // MÉTODOS PROPIOS
     //-------------------------------------------------------

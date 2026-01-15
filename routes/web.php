@@ -17,5 +17,11 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+// Token necesario para postman
+Route::get('/token', function(){
+    return csrf_token();
+});
+
+// require __DIR__.'/conecta-api.php';
 require __DIR__.'/auth.php';
-require __DIR__.'/conecta-api.php';
+

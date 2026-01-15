@@ -4,23 +4,23 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categorias extends Model
+class Tags extends Model
 {
-    protected $table = "categorias";
+    protected $table = 'tags';
     protected $primaryKey = 'id';
-    public $timestamps = true;
+    public $timestamps = false;
 
     protected $fillable = [
         'nombre',
-        'descripcion',
     ];
 
-    protected $hidden = ['created_at','updated_at'];
+    protected $hidden = [];
+
 
     // RELACIONES
     //-------------------------------------------------------
     public function eventos(){
-        return $this->hasMany(Eventos::class);
+        return $this->belongsToMany(Eventos::class, 'eventos_tags', 'id_tag', 'id_evento');
     }
 
     // MÉTODOS PROPIOS

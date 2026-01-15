@@ -12,14 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('eventos', function (Blueprint $table) {
-            $table->id('id');
+            $table->id();
                        
             // Foreign Keys
             $table->unsignedBigInteger('id_categoria');
-            $table->unsignedBigInteger('id_user');
             $table->unsignedBigInteger('id_entidad');
+            $table->unsignedBigInteger('id_creador');
 
-            $table->foreign('id_user')
+            $table->foreign('id_creador')
                     ->references('id')
                     ->on('users')
                     ->cascadeOnDelete();
@@ -40,11 +40,10 @@ return new class extends Migration
             $table->text('descripcion')->nullable();
             $table->decimal('valoracion', 4, 2)->default(0);   // 0,00 de valoración
 
-            // Ubicación ->Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
+            // Ubicación -> Dato en MongoDB. Mongo usa ObjectId como id, por lo que usamos Strings
             $table->string('ubicacion', 24)->nullable();
             
             $table->integer('num_participantes')->default(0);
-            $table->integer('max_participantes')->nullable();   // Para que en caso de que haya un tope de participantes se pueda mirar
             $table->string('foto_evento')->nullable();
             $table->boolean('es_accesible')->default(false);
 
