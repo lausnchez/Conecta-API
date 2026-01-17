@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Builder;
 
 class Eventos extends Model
 {
@@ -76,6 +77,17 @@ class Eventos extends Model
      */
     public static function getEventoById($id){
         return self::find($id);
+    }
+
+    /**
+     * Recoge los eventos según la categoría
+     * 
+     * @param Builder $query
+     * @param bool $categoria Integer ID de la categoría
+     * @return Builder
+     */
+    public function scopeCategoria(Builder $query, int $categoria): Builder{
+        return $query->where('id_categoria', $categoria);
     }
 
 }

@@ -17,8 +17,8 @@ Route::prefix('v1')->group(function () {
     });
 });
 
-require __DIR__.'/UserRoutes.php';   // Rutas de Users
-
+require __DIR__.'/UserRoutes.php';      // Rutas de Users
+require __DIR__.'/RolesRoutes.php';     // Rutas de Roles
 
 
 
