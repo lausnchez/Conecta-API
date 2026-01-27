@@ -41,6 +41,9 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 ### Base de datos en MongoDB
 
 ## ENDPOINTS
+> [!WARNING]
+> Para poder usar los endpoints es necesario registrarse primero y mandar como header el token que nos devuelve del usuario para poder pasar la barrera de autentificación.
+
 > [!IMPORTANT]
 > Se está trabajando actualmente en: `Eventos`
 
@@ -56,10 +59,15 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 | ``Apellido``| VARCHAR(100)|
 | ``Teléfono``| VARCHAR(20)|
 | ``Porcentaje de discapacidad``| DECIMAL(5,2)|
+| ``Fecha_Nacimiento``| DATE |
 
 ---
 Endpoints:
-
+#### Autentificación de usuarios
+- [**POST** | Registrar usuario](#registrarse)
+- [**POST** | Registrar usuario](#login)
+---
+#### Generales
 - [**GET** | Todos los users](#get--todos-los-users)
 - [**GET** | User por ID](#get--user-por-id)
 - [**GET** | User por Username](#get--user-por-username)
@@ -73,10 +81,70 @@ Endpoints:
 - [**GET** | Users Admins](#get--users-admins)
 - [**GET** | Users Developers](#get--users-developers)
 - [**GET** | Users General-Users](#get--users-general-users)
-- [**POST** | Crear nuevo User](#post--crear-nuevo-user)
-- [**DELETE** | Borrar un user](#delete--borrar-un-user)
+- [**POST** | Crear nuevo User (no usar a ser posible)](#post--crear-nuevo-user)
+- [**DELETE** | Borrar un user (no usar a ser posible)](#delete--borrar-un-user)
 - [**PATCH** | Actualizar user ya existente (parcial)](#patch--actualizar-user-ya-existente-parcial)
 - [**PUT** | Actualizar user ya existente (completo)](#put--actualizar-user-ya-existente-completo)
+---
+## Autentificación de Users
+### Registrarse
+- **Método**: POST
+- **URL**: **`/registro`**
+- **Descripción**: Crea un nuevo usuario en la base de datos a partir de un conjunto de datos. Es obligatorio insertar mínimo el **email**, **password**, **username**, **nombre**, y **apellido**. En caso de no ponerlos *es_empresa* y *es_familiar* se pondrán default a false, *porcentaje_discapacidad* a 0, y el rol siempre será *General-User*.
+
+Body de la request:
+```json
+{
+    "email": "emailEjemplo@gmail.com",
+    "username": "userEjemplo",
+    "password": "password",
+    "password_confirmation": "password",
+    "nombre": "User",
+    "apellido": "Ejemplo",
+    "telefono": "000000000",
+    "fecha_nacimiento": "1990-05-15",
+    "es_empresa": false,
+    "es_familiar": false,
+    "porcentaje_discapacidad": 0
+}
+```
+
+Respuesta (**201 OK**):
+```json
+{
+    "mensaje": "Usuario registrado exitosamente",
+    "user": {
+        "id": 0,
+        "email": "emailEjemplo@gmail.com",
+        "username": "userEjemplo"
+    },
+    "token": "xxxxxxxxxxxx"
+}
+```
+[Volver arriba](#-índice)
+
+
+### Login
+- **Método**: POST
+- **URL**: **`/login`**
+- **Descripción**: Inicia sesión de un usuario devolviendo su token de autentificación.
+
+Body de la request:
+```json
+{
+    "email": "emailEjemplo@gmail.com",
+    "password": "password",
+}
+```
+
+Respuesta (**201 OK**):
+```json
+{
+    "token": "xxxxxxxxxxxx",
+    "mensaje": "Inicio de sesión exitoso"
+}
+```
+[Volver arriba](#-índice)
 
 ---
 ### GET | Todos los users

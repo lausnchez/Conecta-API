@@ -18,9 +18,19 @@ class AuthController extends Controller{
         try {
             // Validamos los campos que esperamos recibir
             $validatedData = $request->validate([
-                'name' => 'required|string|max:255',
-                'email' => 'required|string|email|max:255|unique:users',
-                'password' => 'required|string|min:6',
+                'email' => 'required|email|max:255|unique:users,email',
+                'username' => 'required|string|max:20|min:4|unique:users,username',
+                'password' => 'required|string|min:6|confirmed',
+                'nombre' => 'required|string|max:100',
+                'apellido' => 'required|string|max:100',
+                
+                // Opcionales
+                'telefono' => 'nullable|string|max:20',
+                'fecha_nacimiento' => 'nullable|date|before:today',
+                'es_empresa' => 'boolean',
+                'es_familiar' => 'boolean',
+                'porcentaje_discapacidad' => 'numeric|min:0|max:100',
+
             ]);
         } catch (ValidationException $e) {
             // Capturamos la excepción de validación y devolvemos una respuesta JSON
@@ -29,18 +39,40 @@ class AuthController extends Controller{
                 'errores' => $e->errors()
             ], 422);
         }
-        //Verificamos si el usuario ya está registrado
+        //Verificamos si el usuario ya está registrado -> manda error 409
         if (User::where('email', $request->email)->exists()) {
             return response()->json(['mensaje' => 'El usuario ya está registrado'], 409);
         }
+        
         //Creamos el usuario en la base de datos
         $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
+            'email' => $validatedData['email'],
+            'username' => $validatedData['username'],
+            'password' => Hash::make($validatedData['password']),
+            'nombre' => $validatedData['nombre'],
+            'apellido' => $validatedData['apellido'],
+            'telefono' => $validatedData['telefono'],
+            'fecha_nacimiento'=>$validatedData['fecha_nacimiento'],
+
+            // Con defaults
+            'es_empresa'=> $validatedData['es_empresa'] ?? false,
+            'es_familiar'=> $validatedData['es_familiar'] ?? false,
+            'porcentaje_discapacidad' => $validatedData['porcentaje_discapacidad'] ?? 0,
+            'rol' => 3,
+            'activo' => true,
+
         ]);
+
         //Devolvemos una respuesta JSON indicando que el usuario fue registrado exitosamente
-        return response()->json(['mensaje' => 'Usuario registrado exitosamente'], 201);
+        return response()->json([
+            'mensaje' => 'Usuario registrado exitosamente',
+            'user' => [
+                'id' => $user->id,
+                'email' => $user->email,
+                'username' => $user->username,
+            ],
+            'token' => $user->createToken('API_ACCESS_TOKEN_REGISTER')->plainTextToken,
+            ], 201);
     }
     
     /**
@@ -74,7 +106,7 @@ class AuthController extends Controller{
         }
 
         // Generamos un token de acceso para el usuario
-        $token = $user->createToken('auth_token')->plainTextToken;
+        $token = $user->createToken('API_ACCESS_TOKEN_LOGIN')->plainTextToken;
         // Devolvemos una respuesta JSON con el token de acceso
         return response()->json(['token' => $token, 'mensaje' => 'Inicio de sesión exitoso'], 200);
     }
