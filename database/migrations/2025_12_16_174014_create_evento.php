@@ -36,7 +36,8 @@ return new class extends Migration
 
             // Campos propios
             $table->string('nombre');
-            $table->date('fecha_evento');
+            $table->timestamp('fecha_inicio_evento')->useCurrent();
+            $table->timestamp('fecha_final_evento')->useCurrent();
             $table->text('descripcion')->nullable();
             $table->decimal('valoracion', 4, 2)->default(0);   // 0,00 de valoración
 
