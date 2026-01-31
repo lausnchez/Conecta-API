@@ -1236,10 +1236,10 @@ Respuesta (**200 OK**):
   - [ ] Modelo
   - [ ] Controlador
   - [ ] Rutas
-- [ ] Tags
-  - [ ] Modelo
-  - [ ] Controlador
-  - [ ] Rutas
+- [x] Tags
+  - [x] Modelo
+  - [x] Controlador
+  - [x] Rutas
 
 ### 💡 | Categorías
 Todavía no está desarrollado.
