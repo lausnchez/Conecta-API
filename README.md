@@ -10,7 +10,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 3. [ENDPOINTS](#endpoints)
     - [Usuarios ✅](#--usuarios) 
     - [Eventos](#--eventos) 
-    - [Categorías](#--categorías) 
+    - [Categorías ✅](#--categorías) 
     - [Entidades](#--entidades) 
     - [Tags ✅](#--tags) 
     - [Opiniones](#--opiniones) 
@@ -1225,10 +1225,11 @@ Respuesta (**200 OK**):
 ---
 
 ### 💡 | Eventos
-- [ ] Categoría
-  - [ ] Modelo
-  - [ ] Controlador
-  - [ ] Rutas
+- [x] Categoría
+  - [x] Modelo
+  - [x] Controlador
+  - [x] Rutas
+  - [ ] Docs
 - [ ] Entidad
   - [ ] Modelo
   - [ ] Controlador
@@ -1239,12 +1240,139 @@ Respuesta (**200 OK**):
   - [x] Rutas
 
 ### 💡 | Categorías
-Todavía no está desarrollado.
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``Nombre``| VARCHAR(50)|
+| ``Descripcion``| VARCHAR(255)|
+
+---
+- [**GET** | Todos las Categorías](#get--todos-las-categorías)
+- [**GET** | Categoría por ID](#get--tag-por-id)
+- [**POST** | Crear nueva Categoría](#post--crear-nuevo-tag)
+- [**DELETE** | Borrar una Categoría](#delete--borrar-un-tag)
+- [**PUT** | Actualizar una Categoría](#patch--actualizar-tag)
+
+---
+**Endpoints:**
+### GET | Todos las Categorías
+- **Método**: GET
+- **URL**: **`/categorias`**
+- **Descripción**: Recoge todas las categorías de la base de datos. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nombreCategoria",
+    "descripcion": "Descripción de la categoría"
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Categoría por ID
+- **Método**: GET
+- **URL**: **`/categoria/{id}`**
+- **Descripción**: Recoge una Categoria por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nombreCategoria",
+    "descripcion": "descripciónCategoria",
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nueva Categoría
+- **Método**: POST
+- **URL**: **`/categoria`**
+- **Descripción**: Crea una nueva Categoría.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``Nombre``      | string       | Si       | Nombre de la categoría|
+| ``Descripción``      | string       | Si       | Descripción de la categoría|
+
+
+Body de la request:
+```json
+{
+  "nombre": "nombreCategoria",
+  "descripcion": "descripcionCategoria"
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombreCategoria",
+  "descripcion": "descripcionCategoria"
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar una Categoría
+- **Método**: DELETE
+- **URL**: **`/categoria/{id}`**
+- **Descripción**: Elimina la categoría de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si       | ID de la categoría que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar una Categoría
+- **Método**: PUT
+- **URL**: **`/categoria/{id}`**
+- **Descripción**: Actualiza una categoría.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       | ID del usuario que se quiere modificar.      |
+| `nombre`      | string       | Si      | Nombre de la categoría |
+| `descripcion`      | string       | Si      | Descripción de la categoría |
+
+
+Body de la request:
+```json
+{
+  "nombre": "nombreCategoría",
+  "descripcion": "descripcionCategoria",
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nuevoNombreCategoria",
+    "descripcion": "nuevaDescripcionCategoria",
+}
+```
+[Volver arriba](#-índice)
+
+
 
 ### 💡 | Entidades
 Todavía no está desarrollado.
 
 ### 💡 | Tags
+**Endpoints:**
 **Validaciones**:
 | Parámetro | Datatype |
 |--------------|--------------|
@@ -1311,7 +1439,6 @@ Respuesta (**200 OK**):
 ```
 [Volver arriba](#-índice)
 
----
 ---
 ### DELETE | Borrar un Tag
 - **Método**: DELETE
