@@ -1,7 +1,4 @@
 # Conecta API
-> [!NOTE]
-> Ya está terminada la funcionalidad básica de **Users** de la API. Se trabajará ahora en **Events** y en el dashboard para que podáis manejar mejor los datos de la bbdd, pero no es prioritario.
-
 API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la Hackathon del municipio de 2025/2026.
 
 Su objetivo es recoger la información almacenada en varias bases de datos para asegurar el correcto funcionamiento de las aplicaciones del proyecto de forma escalable y limpia.
@@ -11,11 +8,11 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 1. [Al importar al PC](#-al-importar-en-el-pc)
 2. [Estructura de la base de datos](#-estructura-de-la-base-de-datos)
 3. [ENDPOINTS](#endpoints)
-    - [Usuarios](#--usuarios) 
+    - [Usuarios ✅](#--usuarios) 
     - [Eventos](#--eventos) 
     - [Categorías](#--categorías) 
     - [Entidades](#--entidades) 
-    - [Tags](#--tags) 
+    - [Tags ✅](#--tags) 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
 
@@ -45,7 +42,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 > Para poder usar los endpoints es necesario registrarse primero y mandar como header el token que nos devuelve del usuario para poder pasar la barrera de autentificación.
 
 > [!IMPORTANT]
-> Se está trabajando actualmente en: `Eventos`
+> Se está trabajando actualmente en: `Eventos`.
 
 ### 💡 | Usuarios
 
@@ -1248,7 +1245,118 @@ Todavía no está desarrollado.
 Todavía no está desarrollado.
 
 ### 💡 | Tags
-Todavía no está desarrollado.
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``Nombre``| VARCHAR(255)|
+
+---
+- [**GET** | Todos los Tags](#get--todos-los-tags)
+- [**GET** | Tag por ID](#get--tag-por-id)
+- [**POST** | Crear nuevo Tag](#post--crear-nuevo-tag)
+- [**DELETE** | Borrar un Tag](#delete--borrar-un-tag)
+- [**PUT** | Actualizar Tag](#patch--actualizar-tag)
+
+---
+
+### GET | Todos los Tags
+- **Método**: GET
+- **URL**: **`/tags`**
+- **Descripción**: Recoge todos los tags de la base de datos. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nombreTag",
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Tag por ID
+- **Método**: GET
+- **URL**: **`/tag/{id}`**
+- **Descripción**: Recoge un Tag por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nombreTag",
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nuevo Tag
+- **Método**: POST
+- **URL**: **`/tag`**
+- **Descripción**: Crea un nuevo Tag.
+
+Body de la request:
+```json
+{
+  "nombre": "nombreTag"
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombreTag"
+}
+```
+[Volver arriba](#-índice)
+
+---
+---
+### DELETE | Borrar un Tag
+- **Método**: DELETE
+- **URL**: **`/tag/{id}`**
+- **Descripción**: Elimina el tag de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si       | ID del tag que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar Tag
+- **Método**: PUT
+- **URL**: **`/tag/{id}`**
+- **Descripción**: Actualiza un tag. 
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       | ID del usuario que se quiere modificar.      |
+| `nombre`      | string       | No       |       |
+
+
+Body de la request:
+```json
+{
+  "nombre": "nuevoNombreTag",
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "nuevoNombreTag",
+}
+```
+[Volver arriba](#-índice)
+
 
 ### 💡 | Opiniones
 Todavía no está desarrollado.
