@@ -50,7 +50,7 @@ class TagsController extends Controller
      * 
      */
     public function destroy($id){
-        $tag = Tags::findOrFind($id);
+        $tag = Tags::findOrFail($id);
         $tag->delete();
         return response()->json(null, 204);
     }
