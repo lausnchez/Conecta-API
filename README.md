@@ -1227,10 +1227,19 @@ Respuesta (**200 OK**):
 
 ---
 
----
-
 ### 💡 | Eventos
-Todavía no está desarrollado.
+- [ ] Categoría
+  - [ ] Modelo
+  - [ ] Controlador
+  - [ ] Rutas
+- [ ] Entidad
+  - [ ] Modelo
+  - [ ] Controlador
+  - [ ] Rutas
+- [ ] Tags
+  - [ ] Modelo
+  - [ ] Controlador
+  - [ ] Rutas
 
 ### 💡 | Categorías
 Todavía no está desarrollado.
