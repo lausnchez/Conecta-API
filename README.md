@@ -11,7 +11,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
     - [Usuarios ✅](#--usuarios) 
     - [Eventos](#--eventos) 
     - [Categorías ✅](#--categorías) 
-    - [Entidades](#--entidades) 
+    - [Entidades ✅](#--entidades) 
     - [Tags ✅](#--tags) 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
@@ -1225,19 +1225,7 @@ Respuesta (**200 OK**):
 ---
 
 ### 💡 | Eventos
-- [x] Categoría
-  - [x] Modelo
-  - [x] Controlador
-  - [x] Rutas
-  - [ ] Docs
-- [ ] Entidad
-  - [ ] Modelo
-  - [ ] Controlador
-  - [ ] Rutas
-- [x] Tags
-  - [x] Modelo
-  - [x] Controlador
-  - [x] Rutas
+Todavía está en desarrollo.
 
 ### 💡 | Categorías
 **Validaciones**:
@@ -1369,7 +1357,142 @@ Respuesta (**200 OK**):
 
 
 ### 💡 | Entidades
-Todavía no está desarrollado.
+**Endpoints:**
+
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``Nombre``| VARCHAR(255)|
+| ``Descripcion``| TEXT|
+| ``Es_Accesible``| BOOLEAN|
+| ``Foto_Entidad``| VARCHAR(255) |
+
+---
+- [**GET** | Todos las Entidades](#get--todos-las-entidades)
+- [**GET** | Entidad por ID](#get--entidad-por-id)
+- [**POST** | Crear nueva Entidad](#post--crear-nueva-entidad)
+- [**DELETE** | Borrar una Entidad](#delete--borrar-una-entidad)
+- [**PUT** | Actualizar Entidad](#patch--actualizar-entidad)
+
+---
+
+### GET | Todos las Entidades
+- **Método**: GET
+- **URL**: **`/entidades`**
+- **Descripción**: Recoge todos las entidades de la base de datos. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Entidad por ID
+- **Método**: GET
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Recoge una Entidad por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nueva Entidad
+- **Método**: POST
+- **URL**: **`/entidad`**
+- **Descripción**: Crea una nueva Entidad.
+
+Body de la request:
+```json
+{
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto" 
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar una Entidad
+- **Método**: DELETE
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Elimina la entidad de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si       | ID del tag que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar Entidad
+- **Método**: PUT
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Actualiza una entidad. Edita parcialmente, por lo que sólo se deben pasar los datos que se quieren actualizar.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       |  |
+| `nombre`      | string       | Si       |  |
+| `descripcion`      | string       | No      |  |
+| `es_accesible`      | boolean      | Si       |  |
+| `foto_entidad`      | string       | No       |  |
+
+
+Body de la request:
+```json
+{
+    "nombre": "Deportes",
+    "descripcion": "Para hacer ejercicio en compañía."
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "Deportes",
+    "descripcion": "Para hacer ejercicio en compañía.",
+    "es_accesible": false,
+    "foto_entidad": null
+}
+```
+[Volver arriba](#-índice)
+
+
 
 ### 💡 | Tags
 **Endpoints:**
