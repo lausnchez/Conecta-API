@@ -3,9 +3,8 @@ API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la 
 
 Su objetivo es recoger la información almacenada en varias bases de datos para asegurar el correcto funcionamiento de las aplicaciones del proyecto de forma escalable y limpia.
 
-## Endpoints pendientes
+## Tareas urgentes pendientes
 - [ ] Recuperar contraseña (por correo)
-- [ ] Eventos
 - [ ] Manejo de 200 cuando no hay auth de por medio (exception handler authenticate)
 
 ## 🔍 Índice
