@@ -3,15 +3,19 @@ API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la 
 
 Su objetivo es recoger la información almacenada en varias bases de datos para asegurar el correcto funcionamiento de las aplicaciones del proyecto de forma escalable y limpia.
 
+## Endpoints pendientes
+- [ ] Recuperar contraseña (por correo)
+- [ ] Eventos
+- [ ] Manejo de 200 cuando no hay auth de por medio (exception handler authenticate)
 
 ## 🔍 Índice
 1. [Al importar al PC](#-al-importar-en-el-pc)
 2. [Estructura de la base de datos](#-estructura-de-la-base-de-datos)
 3. [ENDPOINTS](#endpoints)
     - [Usuarios ✅](#--usuarios) 
-    - [Eventos](#--eventos) 
+    - [Eventos ✅](#--eventos) 
     - [Categorías ✅](#--categorías) 
-    - [Entidades](#--entidades) 
+    - [Entidades ✅](#--entidades) 
     - [Tags ✅](#--tags) 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
@@ -47,16 +51,22 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 ### 💡 | Usuarios
 
 **Validaciones**:
-| Parámetro | Datatype |
-|--------------|--------------|
-| ``Username``| VARCHAR(20)|
-| ``Email``| VARCHAR(255)|
-| ``Password``| VARCHAR(255)|
-| ``Nombre``| VARCHAR(100)|
-| ``Apellido``| VARCHAR(100)|
-| ``Teléfono``| VARCHAR(20)|
-| ``Porcentaje de discapacidad``| DECIMAL(5,2)|
-| ``Fecha_Nacimiento``| DATE |
+| Parámetro                 | Datatype                         |
+| ------------------------- | -------------------------------- |
+| `id`                      | BIGINT (PRIMARY KEY)             |
+| `username`                | VARCHAR(20)                      |
+| `nombre`                  | VARCHAR(100)                     |
+| `apellido`                | VARCHAR(100)                     |
+| `email`                   | VARCHAR(255) (unique)            |
+| `password`                | VARCHAR(255)                     |
+| `telefono`                | VARCHAR(20) (nullable)           |
+| `es_empresa`              | BOOLEAN                          |
+| `es_familiar`             | BOOLEAN                          |
+| `fecha_nacimiento`        | DATE (nullable)                  |
+| `porcentaje_discapacidad` | DECIMAL(5,2)                     |
+| `rol` (deprecated actualmente)| BIGINT (unsigned, FK → roles.id)|
+| `activo` (deprecated actualmente)|BOOLEAN                    |
+
 
 ---
 Endpoints:
@@ -1225,21 +1235,262 @@ Respuesta (**200 OK**):
 ---
 
 ### 💡 | Eventos
-- [x] Categoría
-  - [x] Modelo
-  - [x] Controlador
-  - [x] Rutas
-  - [ ] Docs
-- [ ] Entidad
-  - [ ] Modelo
-  - [ ] Controlador
-  - [ ] Rutas
-- [x] Tags
-  - [x] Modelo
-  - [x] Controlador
-  - [x] Rutas
+**Validaciones**:
+| Parámetro             | Datatype                |
+| --------------------- | ----------------------- |
+| `id`                  | BIGINT (PRIMARY KEY)    |
+| `id_categoria`        | BIGINT (unsigned, FK)   |
+| `id_entidad`          | BIGINT (unsigned, FK)   |
+| `id_creador`          | BIGINT (unsigned, FK)   |
+| `nombre`              | VARCHAR(255)            |
+| `fecha_inicio_evento` | TIMESTAMP               |
+| `fecha_final_evento`  | TIMESTAMP               |
+| `descripcion`         | TEXT (nullable)         |
+| `valoracion`          | DECIMAL(4,2)            |
+| `ubicacion`           | VARCHAR(24) (nullable)  |
+| `num_participantes`   | INT                     |
+| `foto_evento`         | VARCHAR(255) (nullable) |
+| `es_accesible`        | BOOLEAN                 |
+| `created_at`          | TIMESTAMP               |
+| `updated_at`          | TIMESTAMP               |
+
+
+---
+- [**GET** | Todos los eventos](#get--todos-las-categorías)
+- [**GET** | Evento por ID](#get--tag-por-id)
+- [**POST** | Crear nuevo Evento](#post--crear-nuevo-tag)
+- [**DELETE** | Borrar un Evento](#delete--borrar-un-tag)
+- [**PUT** | Actualizar un Evento](#patch--actualizar-tag)
+
+---
+
+**Endpoints:**
+### GET | Todos los Eventos
+- **Método**: GET
+- **URL**: **`/eventos`**
+- **Descripción**: Recoge todas los eventos de la base de datos. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "id_categoria": 2,
+    "id_entidad": 1,
+    "id_creador": 21,
+    "nombre": "Concierto solidario",
+    "fecha_inicio_evento": "2026-03-10T18:00:00.000000Z",
+    "fecha_final_evento": "2026-03-10T21:00:00.000000Z",
+    "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+    "valoracion": "5.55",
+    "ubicacion": "65b8f1a9c2e44f0a12345678", // Relación futura con MongoDB
+    "num_participantes": 200,
+    "foto_evento": "evento1.jpg",
+    "es_accesible": true,
+    "categoria": {
+        "id": 2,
+        "nombre": "Deportes"
+    },
+    "entidad": {
+        "id": 1,
+        "nombre": "Deportes Paco S.L.",
+        "es_accesible": true
+    },
+    "creador": {
+        "id": 21,
+        "username": "username",
+        "email": "email@gmail.com",
+        "nombre": "nombreUsuario",
+        "apellido": "apellidoUsuario"
+    },
+    "tags": []
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Evento por ID
+- **Método**: GET
+- **URL**: **`/evento/{id}`**
+- **Descripción**: Recoge un Evento por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "id_categoria": 2,
+    "id_entidad": 1,
+    "id_creador": 21,
+    "nombre": "Concierto solidario",
+    "fecha_inicio_evento": "2026-03-10T18:00:00.000000Z",
+    "fecha_final_evento": "2026-03-10T21:00:00.000000Z",
+    "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+    "valoracion": "5.55",
+    "ubicacion": "65b8f1a9c2e44f0a12345678", // Relación futura con MongoDB
+    "num_participantes": 200,
+    "foto_evento": "evento1.jpg",
+    "es_accesible": true,
+    "categoria": {
+        "id": 2,
+        "nombre": "Deportes"
+    },
+    "entidad": {
+        "id": 1,
+        "nombre": "Deportes Paco S.L.",
+        "es_accesible": true
+    },
+    "creador": {
+        "id": 21,
+        "username": "username",
+        "email": "email@gmail.com",
+        "nombre": "nombreUsuario",
+        "apellido": "apellidoUsuario"
+    },
+    "tags": []
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nuevo Evento
+- **Método**: POST
+- **URL**: **`/evento`**
+- **Descripción**: Crea un nuevo Evento.
+
+**Parámetros**: 
+| Parámetro                 | Tipo    | Requerido |
+| ------------------------- | ------- | --------- |
+| `username`                | string  | Sí        |
+| `nombre`                  | string  | Sí        |
+| `apellido`                | string  | Sí        |
+| `email`                   | string  | Sí        |
+| `password`                | string  | Sí        |
+| `telefono`                | string  | No        |
+| `es_empresa`              | boolean | No        |
+| `es_familiar`             | boolean | No        |
+| `fecha_nacimiento`        | date    | No        |
+| `porcentaje_discapacidad` | decimal | No        |
+| `rol`                     | integer | Sí        |
+| `activo`                  | boolean | No        |
+
+
+Body de la request:
+```json
+{
+  "id_categoria": 2,
+  "id_entidad": 1,
+  "id_creador": 21,
+  "nombre": "Concierto solidario",
+  "fecha_inicio_evento": "2026-03-10 18:00:00",
+  "fecha_final_evento": "2026-03-10 21:00:00",
+  "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+  "valoracion": 0.00,
+  "ubicacion": "65b8f1a9c2e44f0a12345678",
+  "num_participantes": 0,
+  "foto_evento": "evento1.jpg",
+  "es_accesible": true
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id_categoria": 2,
+  "id_entidad": 1,
+  "id_creador": 21,
+  "nombre": "Concierto solidario",
+  "fecha_inicio_evento": "2026-03-10T18:00:00.000000Z",
+  "fecha_final_evento": "2026-03-10T21:00:00.000000Z",
+  "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+  "valoracion": "0.00",
+  "ubicacion": "65b8f1a9c2e44f0a12345678",
+  "num_participantes": 0,
+  "foto_evento": "evento1.jpg",
+  "es_accesible": true,
+  "id": 2
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar un Evento
+- **Método**: DELETE
+- **URL**: **`/evento/{id}`**
+- **Descripción**: Elimina el evento de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``id``      | integer       | Si       | ID del evento que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar un Evento
+- **Método**: PUT
+- **URL**: **`/evento/{id}`**
+- **Descripción**: Actualiza un evento.
+
+**Parámetros**: 
+| Parámetro                 | Tipo    | Requerido |
+| ------------------------- | ------- | --------- |
+| `username`                | string  | Sí        |
+| `nombre`                  | string  | Sí        |
+| `apellido`                | string  | Sí        |
+| `email`                   | string  | Sí        |
+| `password`                | string  | Sí        |
+| `telefono`                | string  | No        |
+| `es_empresa`              | boolean | No        |
+| `es_familiar`             | boolean | No        |
+| `fecha_nacimiento`        | date    | No        |
+| `porcentaje_discapacidad` | decimal | No        |
+| `rol`                     | integer | Sí        |
+| `activo`                  | boolean | No        |
+
+Body de la request:
+```json
+{
+  "id_categoria": 2,
+  "id_entidad": 1,
+  "id_creador": 21,
+  "nombre": "Concierto solidario",
+  "fecha_inicio_evento": "2026-03-10 18:00:00",
+  "fecha_final_evento": "2026-03-10 21:00:00",
+  "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+  "valoracion": 0.00,
+  "ubicacion": "65b8f1a9c2e44f0a12345678",
+  "num_participantes": 0,
+  "foto_evento": "evento1.jpg",
+  "es_accesible": true
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id_categoria": 2,
+  "id_entidad": 1,
+  "id_creador": 21,
+  "nombre": "Concierto solidario",
+  "fecha_inicio_evento": "2026-03-10 18:00:00",
+  "fecha_final_evento": "2026-03-10 21:00:00",
+  "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
+  "valoracion": 0.00,
+  "ubicacion": "65b8f1a9c2e44f0a12345678",
+  "num_participantes": 0,
+  "foto_evento": "evento1.jpg",
+  "es_accesible": true
+}
+```
+[Volver arriba](#-índice)
+
+
 
 ### 💡 | Categorías
+
 **Validaciones**:
 | Parámetro | Datatype |
 |--------------|--------------|
@@ -1369,7 +1620,142 @@ Respuesta (**200 OK**):
 
 
 ### 💡 | Entidades
-Todavía no está desarrollado.
+**Endpoints:**
+
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``Nombre``| VARCHAR(255)|
+| ``Descripcion``| TEXT|
+| ``Es_Accesible``| BOOLEAN|
+| ``Foto_Entidad``| VARCHAR(255) |
+
+---
+- [**GET** | Todos las Entidades](#get--todos-las-entidades)
+- [**GET** | Entidad por ID](#get--entidad-por-id)
+- [**POST** | Crear nueva Entidad](#post--crear-nueva-entidad)
+- [**DELETE** | Borrar una Entidad](#delete--borrar-una-entidad)
+- [**PUT** | Actualizar Entidad](#patch--actualizar-entidad)
+
+---
+
+### GET | Todos las Entidades
+- **Método**: GET
+- **URL**: **`/entidades`**
+- **Descripción**: Recoge todos las entidades de la base de datos. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Entidad por ID
+- **Método**: GET
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Recoge una Entidad por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nueva Entidad
+- **Método**: POST
+- **URL**: **`/entidad`**
+- **Descripción**: Crea una nueva Entidad.
+
+Body de la request:
+```json
+{
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto" 
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "nombre de la entidad",
+  "descripcion": "Descripción de la entidad",
+  "es_accesible": true,
+  "foto_entidad": "url de la foto"  
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar una Entidad
+- **Método**: DELETE
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Elimina la entidad de la base de datos.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si       | ID del tag que se quiere eliminar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar Entidad
+- **Método**: PUT
+- **URL**: **`/entidad/{id}`**
+- **Descripción**: Actualiza una entidad. Edita parcialmente, por lo que sólo se deben pasar los datos que se quieren actualizar.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       |  |
+| `nombre`      | string       | Si       |  |
+| `descripcion`      | string       | No      |  |
+| `es_accesible`      | boolean      | Si       |  |
+| `foto_entidad`      | string       | No       |  |
+
+
+Body de la request:
+```json
+{
+    "nombre": "Deportes",
+    "descripcion": "Para hacer ejercicio en compañía."
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre": "Deportes",
+    "descripcion": "Para hacer ejercicio en compañía.",
+    "es_accesible": false,
+    "foto_entidad": null
+}
+```
+[Volver arriba](#-índice)
+
+
 
 ### 💡 | Tags
 **Endpoints:**

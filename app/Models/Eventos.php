@@ -17,7 +17,8 @@ class Eventos extends Model
         'id_entidad',
         'id_creador',
         'nombre',
-        'fecha_evento',
+        'fecha_inicio_evento',
+        'fecha_final_evento',
         'descripcion',
         'valoracion',
         'ubicacion',
@@ -29,7 +30,8 @@ class Eventos extends Model
     protected $hidden = ['created_at','updated_at'];
 
     protected $casts = [
-        'fecha_evento' => 'datetime',
+        'fecha_inicio_evento' => 'datetime',
+        'fecha_final_evento' => 'datetime',
         'valoracion' => 'decimal:2',
         'num_participantes' => 'integer',
         'es_accesible' => 'boolean',
