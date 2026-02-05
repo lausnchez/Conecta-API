@@ -4,7 +4,7 @@ use App\Http\Controllers\EventosController;
 use Illuminate\Support\Facades\Route;
 
 
-// Entidades
+// Eventos
 // -----------------------------------------------------------------------------------------
 Route::prefix('/eventos')->group(function(){
     Route::get('', [EventosController::class, 'index']);   

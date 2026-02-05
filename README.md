@@ -3,9 +3,6 @@ API Rest para el proyecto Conecta del instituto Juan XXIII de Alcorcón para la 
 
 Su objetivo es recoger la información almacenada en varias bases de datos para asegurar el correcto funcionamiento de las aplicaciones del proyecto de forma escalable y limpia.
 
-## Tareas urgentes pendientes
-- [ ] Recuperar contraseña (por correo)
-- [ ] Manejo de 200 cuando no hay auth de por medio (exception handler authenticate)
 
 ## 🔍 Índice
 1. [Al importar al PC](#-al-importar-en-el-pc)
@@ -44,9 +41,6 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 > [!WARNING]
 > Para poder usar los endpoints es necesario registrarse primero y mandar como header el token que nos devuelve del usuario para poder pasar la barrera de autentificación.
 
-> [!IMPORTANT]
-> Se está trabajando actualmente en: `Eventos`.
-
 ### 💡 | Usuarios
 
 **Validaciones**:
@@ -68,7 +62,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 
 
 ---
-Endpoints:
+**Endpoints:**
 #### Autentificación de usuarios
 - [**POST** | Registrar usuario](#registrarse)
 - [**POST** | Registrar usuario](#login)
@@ -1255,11 +1249,13 @@ Respuesta (**200 OK**):
 
 
 ---
-- [**GET** | Todos los eventos](#get--todos-las-categorías)
-- [**GET** | Evento por ID](#get--tag-por-id)
-- [**POST** | Crear nuevo Evento](#post--crear-nuevo-tag)
-- [**DELETE** | Borrar un Evento](#delete--borrar-un-tag)
-- [**PUT** | Actualizar un Evento](#patch--actualizar-tag)
+**Endpoints:**
+- [**GET** | Todos los eventos](#get--todos-los-eventos)
+- [**GET** | Evento por ID](#get--evento-por-id)
+- [**GET** | Evento por ID](#get--eventos-para-la-web)
+- [**POST** | Crear nuevo Evento](#post--crear-nuevo-evento)
+- [**DELETE** | Borrar un Evento](#delete--borrar-un-evento)
+- [**PUT** | Actualizar un Evento](#patch--actualizar-un-evento)
 
 ---
 
@@ -1302,6 +1298,38 @@ Respuesta (**200 OK**):
         "apellido": "apellidoUsuario"
     },
     "tags": []
+}
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Eventos para la web
+- **Método**: GET
+- **URL**: **`/eventosweb`**
+- **Descripción**: Recoge todos los eventos con datos reducidos para la web de demostración. Paginación de 10.
+
+Respuesta (**200 OK**):
+```json
+{
+  "id": 1,
+  "nombre": "Concierto solidario",
+  "fecha_inicio_evento": "2026-03-10T18:00:00.000000Z",
+  "ubicacion": "65b8f1a9c2e44f0a12345678",
+  "es_accesible": true,
+  "categoria": {
+      "id": 2,
+      "nombre": "Deportes"
+  },
+  "entidad": {
+      "id": 1,
+      "nombre": "Deportes"
+  },
+  "creador": {
+      "id": 21,
+      "username": "lausnchez"
+  },
+  "tags": []
 }
 ```
 [Volver arriba](#-índice)
@@ -1498,10 +1526,10 @@ Respuesta (**200 OK**):
 
 ---
 - [**GET** | Todos las Categorías](#get--todos-las-categorías)
-- [**GET** | Categoría por ID](#get--tag-por-id)
-- [**POST** | Crear nueva Categoría](#post--crear-nuevo-tag)
-- [**DELETE** | Borrar una Categoría](#delete--borrar-un-tag)
-- [**PUT** | Actualizar una Categoría](#patch--actualizar-tag)
+- [**GET** | Categoría por ID](#get--categoría-por-id)
+- [**POST** | Crear nueva Categoría](#post--crear-nueva-categoría)
+- [**DELETE** | Borrar una Categoría](#delete--borrar-una-categoría)
+- [**PUT** | Actualizar una Categoría](#patch--actualizar-una-categoría)
 
 ---
 **Endpoints:**

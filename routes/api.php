@@ -1,12 +1,16 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Api\V1\AuthController;
+use App\Http\Controllers\Api\v1\AuthController;
+use App\Http\Controllers\EventosController;
 
 Route::prefix('v1')->group(function () {
     // Rutas públicas sin autentificación
     Route::post('/registro', [AuthController::class, 'registro']);
     Route::post('/login', [AuthController::class, 'login']);
+
+    // Eventos para el mini-dashboard web
+    Route::get('/eventosweb', [EventosController::class, 'indexweb']);
 
     //Rutas protegidas con Sanctum (dentro del grupo de la versión)
     Route::middleware('auth:sanctum')->group(function () {
@@ -21,3 +25,4 @@ Route::prefix('v1')->group(function () {
         require __DIR__.'/EventosRoutes.php';   // Rutas de Eventos
     });
 });
+
