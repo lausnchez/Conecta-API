@@ -88,6 +88,8 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 ---
 ## Autentificación de Users
 ### Registrarse
+> [!IMPORTANT]
+> Éste endpoint no necesita token de Auth para usarse.
 - **Método**: POST
 - **URL**: **`/registro`**
 - **Descripción**: Crea un nuevo usuario en la base de datos a partir de un conjunto de datos. Es obligatorio insertar mínimo el **email**, **password**, **username**, **nombre**, y **apellido**. En caso de no ponerlos *es_empresa* y *es_familiar* se pondrán default a false, *porcentaje_discapacidad* a 0, y el rol siempre será *General-User*.
@@ -125,6 +127,8 @@ Respuesta (**201 OK**):
 
 
 ### Login
+> [!IMPORTANT]
+> Éste endpoint no necesita token de Auth para usarse.
 - **Método**: POST
 - **URL**: **`/login`**
 - **Descripción**: Inicia sesión de un usuario devolviendo su token de autentificación.
@@ -1252,7 +1256,7 @@ Respuesta (**200 OK**):
 **Endpoints:**
 - [**GET** | Todos los eventos](#get--todos-los-eventos)
 - [**GET** | Evento por ID](#get--evento-por-id)
-- [**GET** | Evento por ID](#get--eventos-para-la-web)
+- [**GET** | Eventos con datos reducidos para la web](#get--eventos-para-la-web)
 - [**POST** | Crear nuevo Evento](#post--crear-nuevo-evento)
 - [**DELETE** | Borrar un Evento](#delete--borrar-un-evento)
 - [**PUT** | Actualizar un Evento](#patch--actualizar-un-evento)
@@ -1305,6 +1309,8 @@ Respuesta (**200 OK**):
 ---
 
 ### GET | Eventos para la web
+> [!IMPORTANT]
+> Éste endpoint no necesita token de Auth para usarse.
 - **Método**: GET
 - **URL**: **`/eventosweb`**
 - **Descripción**: Recoge todos los eventos con datos reducidos para la web de demostración. Paginación de 10.
