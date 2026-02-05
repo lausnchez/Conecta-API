@@ -28,6 +28,35 @@ class EventosController extends Controller
     }
 
     /**
+     * Método para los eventos en web con los datos necesarios
+     */
+    public function indexweb(){
+        // Fecha de inicio, nombre, ubicación 
+        $Eventos = Eventos::select([
+            'id',
+            'nombre',
+            'fecha_inicio_evento',
+            'ubicacion',
+            'es_accesible',
+            'id_categoria',
+            'id_entidad',
+            'id_creador',
+        ])->with([
+            'categoria:id,nombre',
+            'entidad:id,nombre',
+            'creador:id,username',
+            'tags:id,nombre'
+        ])->paginate($this->max_paginate);
+
+        // Ocultar las foreign keys en cada evento
+        $Eventos->getCollection()->transform(function ($evento) {
+            return $evento->makeHidden(['id_categoria', 'id_entidad', 'id_creador']);
+        });
+
+        return response()->json($Eventos);      
+    }
+
+    /**
      * 
      */
     public function show($id){

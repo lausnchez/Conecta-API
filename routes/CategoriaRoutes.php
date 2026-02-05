@@ -4,7 +4,7 @@ use App\Http\Controllers\CategoriasController;
 use Illuminate\Support\Facades\Route;
 
 
-// TAGS
+// CATEGORIAS
 // -----------------------------------------------------------------------------------------
 Route::prefix('/categorias')->group(function(){
     Route::get('', [CategoriasController::class, 'index']);   
