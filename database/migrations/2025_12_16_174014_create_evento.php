@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedBigInteger('id_categoria');
             $table->unsignedBigInteger('id_entidad');
             $table->unsignedBigInteger('id_creador');
+            $table->unsignedBigInteger('id_aplicacion');
 
             $table->foreign('id_creador')
                     ->references('id')
@@ -34,8 +35,14 @@ return new class extends Migration
                     ->on('entidades')
                     ->cascadeOnDelete();
 
+            $table->foreign('id_aplicacion')
+                    ->references('id')
+                    ->on('aplicaciones')
+                    ->cascadeOnDelete();
+
             // Campos propios
             $table->string('nombre');
+
             $table->timestamp('fecha_inicio_evento')->useCurrent();
             $table->timestamp('fecha_final_evento')->useCurrent();
             $table->text('descripcion')->nullable();
