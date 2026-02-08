@@ -16,6 +16,7 @@ class Eventos extends Model
         'id_categoria',
         'id_entidad',
         'id_creador',
+        'id_aplicacion',
         'nombre',
         'fecha_inicio_evento',
         'fecha_final_evento',
@@ -54,6 +55,10 @@ class Eventos extends Model
 
     public function tags(){
         return $this->belongsToMany(Tags::class, 'eventos_tags', 'id_evento', 'id_tag');
+    }
+
+    public function aplicacion(){
+        return $this->belongsTo(Aplicaciones::class, 'id_aplicacion');
     }
 
 
