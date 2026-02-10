@@ -26,8 +26,8 @@ Route::prefix('/users')->group(function(){
 
 Route::prefix('/user')->group(function(){
     // Eventos de un user
-    Route::get('/{id}/eventos', [EventosController::class, 'eventosUser'])->where('id', '[0-9]+');
-    Route::get('/{id}/eventosPropios', [UserController::class, 'eventosCreador'])->where('id', '[0-9]+');
+    Route::get('/{id}/eventos', [UserController::class, 'eventosParticipante'])->where('id', '[0-9]+');  // Eventos en los que participa un usuario
+    Route::get('/{id}/eventosPropios', [UserController::class, 'eventosCreador'])->where('id', '[0-9]+');   // Eventos que crea un usuario
     Route::get('/{id}', [UserController::class, 'show'])->where('id', '[0-9]+');
     // Eventos en los que participa un user
 

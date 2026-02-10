@@ -78,8 +78,8 @@ class User extends Authenticatable
         return $this->hasMany(Eventos::class);
     }
 
-    public function eventosParticipante(){
-        return $this->belongsToMany(Eventos::class, 'eventos-users', 'id_user', 'id_evento');
+    public function eventosDondeAsiste(){
+        return $this->belongsToMany(Eventos::class, 'eventos_users', 'id_user', 'id_evento');
     }
 
     // MÉTODOS PROPIOS
@@ -248,7 +248,14 @@ class User extends Authenticatable
      * @param string $user ID del usuario creador
      * @return Builder
      */
-    public function scopeEventosParticipante(Builder $query, int $user):Builder{
-        return Eventos::where('id_creador', $user);
+    public function scopeEventos(Builder $query, int $user):Builder{
+        return $query->where('id', $user)->with(['eventosDondeAsiste' => function($q) {
+            $q->with(
+                ['categoria:id,nombre',
+                'creador:id,username',
+                'entidad:id,nombre',
+                'aplicacion:id,nombre_app'
+                ]);
+        }]);
     }
 }

@@ -62,7 +62,7 @@ class Eventos extends Model
     }
 
     public function participantes(){
-        return $this->belongsToMany(User::class, 'eventos-users', 'id_evento', 'id_user');
+        return $this->belongsToMany(User::class, 'eventos_users', 'id_evento', 'id_user');
     }
 
 
@@ -159,5 +159,4 @@ class Eventos extends Model
     public function scopeEventosCreador(Builder $query, int $user):Builder{
         return $query->where('id_creador', $user);
     }
-
 }
