@@ -246,15 +246,6 @@ class UserController extends Controller
      * @param int $user Usuario creador de los eventos
      */
     public function eventosParticipante(int $id){
-        // $eventos = User::eventos($user)
-        //     ->paginate($this->max_paginate);
-
-        // $eventos->getCollection()->transform(function ($evento) {
-        //     return $evento->makeHidden(['id_categoria', 'id_entidad', 'id_creador']);
-        // });
-
-        // return response()->json($eventos->items());
-
         $user = User::findOrFail($id);
         $eventos = $user->eventosDondeAsiste() 
         ->with([
@@ -265,12 +256,10 @@ class UserController extends Controller
         ])
         ->paginate($this->max_paginate);
 
-    // 3. Limpiamos los campos que no quieres que se vean
-    $eventos->getCollection()->transform(function ($evento) {
-        return $evento->makeHidden(['id_categoria', 'id_entidad', 'id_creador', 'pivot']);
-    });
+        $eventos->getCollection()->transform(function ($evento) {
+            return $evento->makeHidden(['id_categoria', 'id_entidad', 'id_creador', 'pivot']);
+        });
 
-    // 4. .items() devuelve SOLAMENTE el array [ {evento1}, {evento2} ]
-    return response()->json($eventos->items());
+        return response()->json($eventos->items());
     }
 }
