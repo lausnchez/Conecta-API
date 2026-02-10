@@ -27,8 +27,8 @@ class StoreEventosRequest extends FormRequest
             'id_creador'   => 'required|exists:users,id',
 
             'nombre' => 'required|string|max:255',
-            'fecha_inicio_evento' => 'required|date',
-            'fecha_final_evento'  => 'required|date|after_or_equal:fecha_inicio_evento',
+            'fecha_inicio_evento' => 'required|date_format:Y-m-d H:i:s',
+            'fecha_final_evento'  => 'required|date_format:Y-m-d H:i:s|after_or_equal:fecha_inicio_evento',
             'descripcion' => 'nullable|string',
             'valoracion' => 'numeric|min:0|max:99.99',
             'ubicacion' => 'nullable|string|size:24',

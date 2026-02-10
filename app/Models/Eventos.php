@@ -61,6 +61,10 @@ class Eventos extends Model
         return $this->belongsTo(Aplicaciones::class, 'id_aplicacion');
     }
 
+    public function participantes(){
+        return $this->belongsToMany(User::class, 'eventos-users', 'id_evento', 'id_user');
+    }
+
 
     // MÉTODOS PROPIOS
     //-------------------------------------------------------
@@ -95,6 +99,65 @@ class Eventos extends Model
      */
     public function scopeCategoria(Builder $query, int $categoria): Builder{
         return $query->where('id_categoria', $categoria);
+    }
+
+    /**
+     * Recoge eventos por el nombre
+     * 
+     * @param Builder $query
+     * @param string $nombre Nombre de la app
+     * @return Builder
+     */
+    public function scopeNombre(Builder $query, string $nombre): Builder{
+        return $query->where('nombre', 'LIKE', '%'.$nombre.'%');
+
+    }
+
+    //por fecha
+    // public function scopeFecha(Builder $query): Builder{}
+
+    /**
+     * Recoge eventos por app a la que se destinan
+     * 
+     * @param Builder $query
+     * @param string $app Aplicación de destino
+     * @return Builder
+     */
+    public function scopeApp(Builder $query, int $app): Builder{
+        return $query->where('id_aplicacion', $app);
+    }
+
+    /**
+     * Recoge eventos por entidad donde se organizan
+     * 
+     * @param Builder $query
+     * @param string $entidad Entidad a buscar
+     * @return Builder
+     */
+    public function scopeEntidad(Builder $query, int $entidad): Builder{
+        return $query->where('id_entidad', $entidad);
+    }
+
+    /**
+     * Recoge eventos en base a si son accesibles o no
+     * 
+     * @param Builder $query
+     * @param string $accesibilidad Son accesibles o no
+     * @return Builder
+     */
+    public function scopeAccessibilidad(Builder $query, bool $accessibilidad):Builder{
+        return $query->where('es_accesible', $accessibilidad);
+    }
+
+    /**
+     * Recoge un listado de eventos creados por un usuario en específico
+     * 
+     * @param Builder $query
+     * @param string $user ID del usuario creador
+     * @return Builder
+     */
+    public function scopeEventosCreador(Builder $query, int $user):Builder{
+        return $query->where('id_creador', $user);
     }
 
 }

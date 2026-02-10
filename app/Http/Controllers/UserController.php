@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Eventos;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
@@ -207,13 +208,34 @@ class UserController extends Controller
     /**
      * Recoge un usuario buscando por su nombre y su apellido
      * 
-     * @param string $nombre Nombre del usuario
-     * @param string $apellido Apellido(s) del usuario
+     * @param string $busqueda Nombre y apellidos del usuario
      * @return \Illuminate\Http\JsonResponse Usuario con nombre y apellidos coincidentes
      */
     public function nombreCompleto($busqueda){
         // $user = User::nombre($nombre)->apellido($apellido)->with('rol')->get();
         $user = User::nombreCompleto($busqueda)->with('rol')->paginate($this->max_paginate);
         return response()->json($user);
+    }
+
+    /**
+     * Recoge los eventos creados por el usuario
+     * 
+     * @param int $user Usuario creador de los eventos
+     */
+    public function eventosCreador(int $user){
+        $eventos = Eventos::eventosCreador($user)
+        ->with([
+            'categoria:id,nombre',
+            'entidad:id,nombre',
+            'creador:id,username',
+            'tags:id,nombre'
+        ])
+        ->paginate($this->max_paginate);
+
+        $eventos->getCollection()->transform(function ($evento) {
+            return $evento->makeHidden(['id_categoria', 'id_entidad', 'id_creador']);
+        });
+
+        return response()->json($eventos->items());
     }
 }

@@ -96,4 +96,31 @@ class EventosController extends Controller
         $tag->delete();
         return response()->json(null, 204);
     }
+
+    // MÉTODOS ESPECÍFICOS
+    //---------------------------------------------------------
+
+    /**
+     * Recoge eventos accesibles
+     */
+    public function esAccesible(){
+        $eventos = Eventos::accesibilidad(true)->with(
+            ['categoria:id,nombre',
+            'entidad:id,nombre',
+            'creador:id,username,email',
+            'tags',
+            'aplicacion'])
+            ->paginate($this->max_paginate);
+
+        $eventos->getCollection()->transform(function ($evento) {
+            return $evento->makeHidden([
+                'id_categoria',
+                'id_entidad',
+                'id_creador',
+                'id_aplicacion'
+                ]);
+        });
+
+        return response()->json($eventos);
+    }
 }

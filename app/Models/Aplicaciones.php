@@ -24,6 +24,6 @@ class Aplicaciones extends Model
     // RELACIONES
     //-------------------------------------------------------
     public function eventos(){
-        return $this->hasMany(Eventos::class);
+        return $this->hasMany(Eventos::class, 'id_aplicacion', 'id');
     }
 }
