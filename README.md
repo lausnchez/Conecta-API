@@ -13,6 +13,7 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
     - [Categorías ✅](#--categorías) 
     - [Entidades ✅](#--entidades) 
     - [Tags ✅](#--tags) 
+    - [Aplicaciones ✅](#--aplicaciones) 
     - [Opiniones](#--opiniones) 
 4. [Tecnologías usadas y sus versiones](#-tecnologías-usadas-versiones)
 
@@ -70,6 +71,8 @@ Su objetivo es recoger la información almacenada en varias bases de datos para 
 #### Generales
 - [**GET** | Todos los users](#get--todos-los-users)
 - [**GET** | User por ID](#get--user-por-id)
+- [**GET** | Eventos creados por un User](#get--user-por-id)
+- [**GET** | Eventos en los que participa un User](#get--user-por-id)
 - [**GET** | User por Username](#get--user-por-username)
 - [**GET** | Users por coincidencias en el nombre completo o username](#get--users-por-coincidencias-en-el-nombre-completo-y-el-username)
 - [**GET** | Users activos](#get--users-activos)
@@ -250,6 +253,97 @@ Respuesta (**200 OK**):
   },
   "activo": true
 }
+```
+[Volver arriba](#-índice)
+---
+### GET | Eventos creados por un User
+- **Método**: GET
+- **URL**: **`/user/{id}/eventosPropios`**
+- **Descripción**: Recoge una lista de eventos creados por un User específico. 
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si      | ID del usuario del que se quiera recoger la lista de eventos creados por él.|
+
+
+Respuesta (**200 OK**):
+```json
+[
+    {
+        "id": 4,
+        "id_aplicacion": 1,
+        "nombre": "Conferencia Tech 2026",
+        "fecha_inicio_evento": "2026-03-15T10:00:00.000000Z",
+        "fecha_final_evento": "2026-03-15T18:00:00.000000Z",
+        "descripcion": "Evento sobre nuevas tecnologías.",
+        "valoracion": "4.50",
+        "ubicacion": "Madrid, Centro",
+        "num_participantes": 150,
+        "foto_evento": "tech.jpg",
+        "es_accesible": true,
+        "categoria": {
+            "id": 1,
+            "nombre": "Deporte"
+        },
+        "entidad": {
+            "id": 1,
+            "nombre": "Entidad1"
+        },
+        "creador": {
+            "id": 10,
+            "username": "dolores"
+        },
+        "tags": []
+    }
+]
+```
+[Volver arriba](#-índice)
+---
+### GET | Eventos en los que participa un User
+- **Método**: GET
+- **URL**: **`/user/{id}/eventos`**
+- **Descripción**: Recoge un listado de eventos en los que participa o ha participado un User específico. 
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``ID ``      | integer       | Si      | ID del usuario del que se quiera recoger la lista de eventos en los que participa.|
+
+
+Respuesta (**200 OK**):
+```json
+[
+  {
+      "id": 4,
+      "id_aplicacion": 1,
+      "nombre": "Conferencia Tech 2026",
+      "fecha_inicio_evento": "2026-03-15T10:00:00.000000Z",
+      "fecha_final_evento": "2026-03-15T18:00:00.000000Z",
+      "descripcion": "Evento sobre nuevas tecnologías.",
+      "valoracion": "4.50",
+      "ubicacion": "Madrid, Centro",
+      "num_participantes": 150,
+      "foto_evento": "tech.jpg",
+      "es_accesible": true,
+      "categoria": {
+          "id": 1,
+          "nombre": "Deporte"
+      },
+      "entidad": {
+          "id": 1,
+          "nombre": "Entidad1"
+      },
+      "creador": {
+          "id": 10,
+          "username": "dolores"
+      },
+      "aplicacion": {
+          "id": 1,
+          "nombre_app": "Deportes"
+      }
+  }
+]
 ```
 [Volver arriba](#-índice)
 
@@ -1899,6 +1993,148 @@ Respuesta (**200 OK**):
 {
     "id": 1,
     "nombre": "nuevoNombreTag",
+}
+```
+[Volver arriba](#-índice)
+
+### 💡 | Aplicaciones
+**Endpoints:**
+**Validaciones**:
+| Parámetro | Datatype |
+|--------------|--------------|
+| ``nombre_app``| VARCHAR(255)|
+
+---
+- [**GET** | Todos las Aplicaciones](#get--todas-las-aplicaciones)
+- [**GET** | Aplicación por ID](#get--aplicaciones-por-id)
+- [**POST** | Crear nueva Aplicación](#post--crear-nueva-aplicación)
+- [**DELETE** | Borrar una Aplicación](#delete--borrar-una-aplicación)
+- [**PUT** | Actualizar Aplicación](#patch--actualizar-aplicación)
+
+---
+
+### GET | Todas las aplicaciones
+- **Método**: GET
+- **URL**: **`/aplicaciones`**
+- **Descripción**: Recoge todos las aplicaciones de la base de datos. Sin paginar.
+
+Respuesta (**200 OK**):
+```json
+[
+    {
+        "id": 1,
+        "nombre_app": "Deportes"
+    },
+    {
+        "id": 2,
+        "nombre_app": "Mayores"
+    },
+    {
+        "id": 3,
+        "nombre_app": "Jóvenes"
+    }
+]
+```
+[Volver arriba](#-índice)
+
+---
+
+### GET | Aplicaciones por ID
+- **Método**: GET
+- **URL**: **`/aplicacion/{id}`**
+- **Descripción**: Recoge una aplicación por ID.
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 3,
+    "nombre_app": "Jóvenes"
+}
+```
+[Volver arriba](#-índice)
+
+---
+### POST | Crear nueva Aplicación
+
+> [!IMPORTANT]
+> No se debe usar, sólo funciona por usabilidad.
+
+- **Método**: POST
+- **URL**: **`/aplicacion`**
+- **Descripción**: Crea una nueva aplicación.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``nombre_app ``      | VARCHAR(255)       | Si       | Nombre de la aplicación      |
+
+
+Body de la request:
+```json
+{
+    "nombre_app": "Deportes"
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre_app": "Deportes"
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Borrar una Aplicación
+
+> [!IMPORTANT]
+> No se debe usar, sólo funciona por usabilidad.
+
+- **Método**: DELETE
+- **URL**: **`/aplicacion/{id}`**
+- **Descripción**: Elimina la aplicación.
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| ``id ``      | integer       | Si       | ID de la aplicación que se quiere borrar.      |
+
+
+Respuesta (**204 OK**).
+
+[Volver arriba](#-índice)
+
+---
+### PATCH | Actualizar Aplicación
+
+> [!IMPORTANT]
+> No se debe usar, sólo funciona por usabilidad.
+
+- **Método**: PUT
+- **URL**: **`/aplicacion/{id}`**
+- **Descripción**: Actualiza una aplicación. 
+
+**Parámetros**: 
+| Parámetro | Tipo | Requerido | Descripción |
+|--------------|--------------|--------------|--------------|
+| **`ID`**     | integer       | Si       | ID de la aplicación.      |
+| `nombre_app`      | string       | No       | Nombre de la app      |
+
+
+Body de la request:
+```json
+{
+    "id": 1,
+    "nombre_app": "Deportes"
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id": 1,
+    "nombre_app": "Deportes"
 }
 ```
 [Volver arriba](#-índice)

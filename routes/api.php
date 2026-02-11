@@ -17,12 +17,13 @@ Route::prefix('v1')->group(function () {
         Route::get('/profile', [AuthController::class, 'user']);
         Route::post('/logout', [AuthController::class, 'logout']);
         
-        require __DIR__.'/UserRoutes.php';      // Rutas de Users
-        require __DIR__.'/RolesRoutes.php';     // Rutas de Roles
-        require __DIR__.'/TagsRoutes.php';      // Rutas de Tags
-        require __DIR__.'/CategoriaRoutes.php'; // Rutas de Categorías
-        require __DIR__.'/EntidadesRoutes.php'; // Rutas de Entidades
-        require __DIR__.'/EventosRoutes.php';   // Rutas de Eventos
+        require __DIR__.'/UserRoutes.php';          // Rutas de Users
+        require __DIR__.'/RolesRoutes.php';         // Rutas de Roles
+        require __DIR__.'/TagsRoutes.php';          // Rutas de Tags
+        require __DIR__.'/CategoriaRoutes.php';     // Rutas de Categorías
+        require __DIR__.'/EntidadesRoutes.php';     // Rutas de Entidades
+        require __DIR__.'/EventosRoutes.php';       // Rutas de Eventos
+        require __DIR__.'/AplicacionesRoutes.php';  // Rutas de Aplicaciones
     });
 });
 
