@@ -1355,6 +1355,9 @@ Respuesta (**200 OK**):
 - [**DELETE** | Borrar un Evento](#delete--borrar-un-evento)
 - [**PUT** | Actualizar un Evento](#patch--actualizar-un-evento)
 
+- [**POST** | Apuntar un usuario a un evento](#post--apuntar-usuario-a-evento)
+- [**DELETE** | Desapuntar un usuario de un evento](#delete--despuntar-usuario-a-evento)
+- [**GET** | Ver participantes de un evento](#get--ver-participantes-de-un-evento)
 ---
 
 **Endpoints:**
@@ -1612,6 +1615,83 @@ Respuesta (**200 OK**):
   "es_accesible": true
 }
 ```
+[Volver arriba](#-índice)
+
+---
+### POST | Apuntar Usuario a Evento
+- **Método**: POST
+- **URL**: **`/evento/{id}/apuntar`**
+- **Descripción**: Apunta un user a un evento, comprueba su cantidad de participantes y si el user estaba apuntado previamente.
+
+Body de la request:
+```json
+{
+    "id_user": 20
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "id_evento": "4",
+    "id_user": 20
+}
+```
+[Volver arriba](#-índice)
+
+---
+### DELETE | Despuntar Usuario a Evento
+- **Método**: DELETE
+- **URL**: **`/evento/{id}/desapuntar`**
+- **Descripción**: Desapunta a un usuario de un evento.
+
+Body de la request:
+```json
+{
+    "id_user": 20
+}
+```
+
+Respuesta (**200 OK**):
+```json
+{
+    "message": "El usuario ha sido desapuntado del evento",
+    "id_evento": "4",
+    "id_user": 20
+}
+```
+[Volver arriba](#-índice)
+
+---
+### GET | Ver participantes de un Evento
+- **Método**: GET
+- **URL**: **`/evento/{id}/participantes`**
+- **Descripción**: Devuelve la lista de participantes de un evento.
+
+Body de la request:
+```json
+[
+    {
+        "id": 5,
+        "email": "parisian.jackson@example.com",
+        "username": "rerum",
+        "nombre": "Amparo",
+        "apellido": "Durgan",
+        "telefono": null,
+        "es_empresa": false,
+        "es_familiar": false,
+        "fecha_nacimiento": "2017-05-15T00:00:00.000000Z",
+        "porcentaje_discapacidad": "85.97",
+        "rol": 3,
+        "activo": true,
+        "pivot": {
+            "id_evento": 4,
+            "id_user": 5
+        }
+    },
+]
+```
+
 [Volver arriba](#-índice)
 
 
