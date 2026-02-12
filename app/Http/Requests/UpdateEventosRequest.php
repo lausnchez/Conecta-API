@@ -30,7 +30,7 @@ class UpdateEventosRequest extends FormRequest
             'fecha_final_evento'  => 'sometimes|date|after_or_equal:fecha_inicio_evento',
             'descripcion' => 'sometimes|nullable|string',
             'valoracion' => 'sometimes|numeric|min:0|max:99.99',
-            'ubicacion' => 'sometimes|nullable|string|size:24',
+            'ubicacion' => 'sometimes|nullable|string|max:100',
             'num_participantes' => 'sometimes|integer|min:0',
             'foto_evento' => 'sometimes|string|max:255',
             'es_accesible' => 'sometimes|boolean',

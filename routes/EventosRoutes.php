@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\EventosController;
 use Illuminate\Support\Facades\Route;
-
+use Laravel\Prompts\Concerns\Events;
 
 // Eventos
 // -----------------------------------------------------------------------------------------
@@ -18,8 +18,7 @@ Route::prefix('/evento')->group(function(){
     Route::delete('/{id}', [EventosController::class, 'destroy']);
     Route::put('/{id}', [EventosController::class, 'update']);
 
-    // Users que participan en un evento
-    Route::get('/{id}/users', [EventosController::class, '']);
-
-    
+    Route::get('/{id}/participantes', [EventosController::class, 'usersApuntados']);
+    Route::post('/{id}/apuntar', [EventosController::class, 'apuntarUser']);
+    Route::delete('/{id}/desapuntar', [EventosController::class, 'desapuntarUser']);
 });

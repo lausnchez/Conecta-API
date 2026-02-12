@@ -1375,7 +1375,7 @@ Respuesta (**200 OK**):
     "fecha_final_evento": "2026-03-10T21:00:00.000000Z",
     "descripcion": "Evento benéfico con música en directo para recaudar fondos.",
     "valoracion": "5.55",
-    "ubicacion": "65b8f1a9c2e44f0a12345678", // Relación futura con MongoDB
+    "ubicacion": "65b8f1a9c2e44f0a12345678",
     "num_participantes": 200,
     "foto_evento": "evento1.jpg",
     "es_accesible": true,

@@ -123,4 +123,70 @@ class EventosController extends Controller
 
         return response()->json($eventos);
     }
+
+    /**
+     * Devuelve un listado de Users apuntados a un evento
+     */
+    public function usersApuntados($eventID){
+        $event = Eventos::findOrFail($eventID);
+        $participantes = $event->participantes()->get();
+        return response()->json($participantes, 200);
+    }
+
+    /**
+     * Apunta un user a un evento, comprobando la capacidad y si ya estaba apuntado
+     * previamente al evento.
+     * 
+     * 
+     */
+    public function apuntarUser(Request $request, $eventID){
+        $event = Eventos::findOrFail($eventID);
+        $user_id = $request->input('id_user');
+        $participantesActivos = $event->participantes()->count();   // Comprobar max participantes
+
+        // Comprobar si ya estaba apuntado
+        $apuntado = $event->participantes()->where('id_user', $user_id)->exists();
+        if($apuntado){
+            return response()->json([
+                'message' => 'Usuario ya estaba inscrito en este evento',
+                'id_evento' => $eventID,
+                'id_user' => $user_id,
+            ], 200);
+        }
+
+        // Comprobar la capacidad del evento
+        if($participantesActivos >= $event->num_participantes){
+            return response()->json([
+                'error' => 'El evento ha llegado al máximo de capacidad'
+            ], 403);
+        }
+
+        $event->participantes()->syncWithoutDetaching([$user_id]);
+        return response()->json([
+            'id_evento' => $eventID,
+            'id_user' => $user_id,
+        ], 201);
+    }
+
+    /**
+     * 
+     */
+    public function desapuntarUser(Request $request, $eventID){
+        $event = Eventos::findOrFail($eventID);
+        $user = $request->input('id_user');
+
+        // Comprueba si se ha pasado el ID
+        if(!$user){
+            return response()->json([
+                'message' => 'No se ha proporcionado un ID de usuario válido.'
+            ], 400);
+        }
+
+        $event->participantes()->detach($user);
+        return response()->json([
+            'message' => 'El usuario ha sido desapuntado del evento',
+            'id_evento' => $eventID,
+            'id_user' => $user
+        ], 200);
+    }
 }

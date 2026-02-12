@@ -31,7 +31,7 @@ class StoreEventosRequest extends FormRequest
             'fecha_final_evento'  => 'required|date_format:Y-m-d H:i:s|after_or_equal:fecha_inicio_evento',
             'descripcion' => 'nullable|string',
             'valoracion' => 'numeric|min:0|max:99.99',
-            'ubicacion' => 'nullable|string|size:24',
+            'ubicacion' => 'nullable|string|max:100',
             'num_participantes' => 'integer|min:0',
             'foto_evento' => 'nullable|string|max:255',
             'es_accesible' => 'boolean',
